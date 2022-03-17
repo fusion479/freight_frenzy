@@ -34,14 +34,14 @@ public class SixWheel extends LinearOpMode {
             double right = y;
             double squareCoord =returnBiggerMag(x,y);
             if (squareCoord==x){
-                if (y>0){
+                if ((y>0&&x>0)||(y<0&&x<0)){
                     right-= squareCoord;
                 } else {
                     right= -squareCoord;
                     left =left+y;
                 }
             } else {
-                if (x<0){
+                if ((x<0&&y>0)||(x>0&&y<0)){
                     left+= squareCoord;
                 } else {
                     left = squareCoord;
