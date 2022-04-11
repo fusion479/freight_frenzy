@@ -21,7 +21,7 @@ public class DriveConstants {
      * These are motor constants that should be listed online for your motors.
      */
     public static final double TICKS_PER_REV = 537.7;
-    public static final double MAX_RPM = 312;
+    public static final double MAX_RPM = 312.0;
 
     /*
      * Set RUN_USING_ENCODER to true to enable built-in hub velocity control using drive encoders.
@@ -45,18 +45,26 @@ public class DriveConstants {
      */
     public static double WHEEL_RADIUS = 1.88976; // in
     public static double GEAR_RATIO = 22.0/20.0; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 9.7; // in
 
+    //OLD VALUE
+    public static double TRACK_WIDTH = 11.3; // in
+    //cycles track widthpublic static double TRACK_WIDTH = 10.55;
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
      * the built-in velocity PID, *these values are fine as is*. However, if you do not have drive
      * motor encoders or have elected not to use them for velocity control, these values should be
      * empirically tuned.
      */
-    public static double kV = 0.0154;
-    public static double kA = 0.0035;
-    public static double kStatic = 0.08425;
+    //non cycles K VALUES
+    public static double kV = 0.0166;
+    public static double kA = 0.003;
+    public static double kStatic = 0;
 
+    /*cycles k values
+    public static double kV = 0.0159;
+    public static double kA = 0.0016;
+    public static double kStatic = 0.062;
+    */
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,
      * the constraints should never exceed ~80% of the robot's actual capabilities. While Road
@@ -64,10 +72,16 @@ public class DriveConstants {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
-    public static double MAX_VEL = 30;
-    public static double MAX_ACCEL = 30;
-    public static double MAX_ANG_VEL = 5;
-    public static double MAX_ANG_ACCEL = 5;
+    //OLD NUMBERS
+//    public static double MAX_VEL = 30;
+//    public static double MAX_ACCEL = 30;
+//    public static double MAX_ANG_VEL = 5;
+//    public static double MAX_ANG_ACCEL = 5;
+    public static double MAX_VEL = 40.0;
+    public static double MAX_ACCEL = 40.0;
+    public static double MAX_ANG_VEL = Math.toRadians(360);
+    public static double MAX_ANG_ACCEL = Math.toRadians(360);
+
 
 
     public static double encoderTicksToInches(double ticks) {

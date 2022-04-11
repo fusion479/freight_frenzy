@@ -8,14 +8,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @Config
-@TeleOp(name="DrivetrainTest",group="TeleOp")
+@TeleOp(group = "prototype")
 public class DrivetrainTest extends LinearOpMode{
 
     @Override
     public void runOpMode() throws InterruptedException {
         Pose2d controls = new Pose2d(
-                -gamepad1.left_stick_y,
-                -gamepad1.left_stick_x,
+                gamepad1.left_stick_y,
+                gamepad1.left_stick_x,
                 -gamepad1.right_stick_x
         );
 

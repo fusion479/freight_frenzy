@@ -11,27 +11,30 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.hardware.CapVision;
 import org.firstinspires.ftc.teamcode.hardware.Carousel;
-import org.firstinspires.ftc.teamcode.hardware.DelayCommand;
+import org.firstinspires.ftc.teamcode.hardware.RetractableOdoSys;
+import org.firstinspires.ftc.teamcode.hardware.util.DelayCommand;
 import org.firstinspires.ftc.teamcode.hardware.FreightSensor;
 import org.firstinspires.ftc.teamcode.hardware.LiftScoringV2;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Config
-@Autonomous
+@Autonomous (group = "BlueAuton")
 public class PetersParkBlue extends LinearOpMode {
     private CapVision cv = new CapVision();
     private Carousel carousel = new Carousel();
     private DelayCommand delay = new DelayCommand();
     private FreightSensor sensor = new FreightSensor();
     private LiftScoringV2 scoringMech= new LiftScoringV2();
+    private RetractableOdoSys odoSys = new RetractableOdoSys();
+
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    public static double startx = 15.0;
+    public static double startx = 14;
     public static double starty = 70.0;
     public static double startAng = Math.toRadians(90);
 
     public static double scoreHubPosx = 10.9;
-    public static double scoreHubPosy = 40.4;
+    public static double scoreHubPosy = 54;
 
     public static double scoreHubPosAngB = -155;
     public static double scoreHubPosAngR = 25;
@@ -43,7 +46,7 @@ public class PetersParkBlue extends LinearOpMode {
     public static double strafeDistance = 24;
 
 
-    public static String goal = "midgoal";
+    public static String goal = "highgoal";
 
     Pose2d startPosB = new Pose2d(startx, starty, startAng);
     Vector2d scoreHubPosB = new Vector2d(scoreHubPosx, scoreHubPosy);
@@ -58,6 +61,8 @@ public class PetersParkBlue extends LinearOpMode {
         scoringMech.init(hardwareMap);
         sensor.init(hardwareMap);
         cv.init(hardwareMap);
+        odoSys.init(hardwareMap, true);
+
 
         //drive train + async updates of mechanisms
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -76,7 +81,7 @@ public class PetersParkBlue extends LinearOpMode {
                 .setReversed(true)
                 .splineTo(scoreHubPosB, Math.toRadians(scoreHubPosAngB))
                 .UNSTABLE_addTemporalMarkerOffset(0,()->{
-                    scoringMech.release();
+                    scoringMech.releaseHard();
                 })
                 .waitSeconds(1)
                 .lineToLinearHeading(repositionB)
@@ -114,13 +119,13 @@ public class PetersParkBlue extends LinearOpMode {
             telemetry.update();
         }
         if(cv.whichRegion() == 1) {
-            goal = "highgoal";
+            goal = "lowgoal";
         }
         if(cv.whichRegion() == 2) {
             goal = "midgoal";
         }
         if(cv.whichRegion() == 3) {
-            goal = "lowgoal";
+            goal = "highgoal";
         }
         telemetry.addData("goal: ",goal);
         telemetry.addData("region", cv.whichRegion());

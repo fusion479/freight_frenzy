@@ -11,22 +11,25 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.hardware.CapVision;
 import org.firstinspires.ftc.teamcode.hardware.Carousel;
-import org.firstinspires.ftc.teamcode.hardware.DelayCommand;
+import org.firstinspires.ftc.teamcode.hardware.RetractableOdoSys;
+import org.firstinspires.ftc.teamcode.hardware.util.DelayCommand;
 import org.firstinspires.ftc.teamcode.hardware.FreightSensor;
 import org.firstinspires.ftc.teamcode.hardware.LiftScoringV2;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Config
-@Autonomous
+@Autonomous (group = "BlueAuton")
 public class PetersParkBluePreferred extends LinearOpMode {
     private CapVision cv = new CapVision();
     private Carousel carousel = new Carousel();
     private DelayCommand delay = new DelayCommand();
     private FreightSensor sensor = new FreightSensor();
     private LiftScoringV2 scoringMech= new LiftScoringV2();
+    private RetractableOdoSys odoSys = new RetractableOdoSys();
+
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    public static double startx = 15.0;
+    public static double startx = 14;
     public static double starty = 70.0;
     public static double startAng = Math.toRadians(90);
 
@@ -42,7 +45,7 @@ public class PetersParkBluePreferred extends LinearOpMode {
     public static double strafeDistance = 24;
 
 
-    public static String goal = "midgoal";
+    public static String goal = "highgoal";
 
     Pose2d startPosB = new Pose2d(startx, starty, startAng);
     Vector2d scoreHubPosB = new Vector2d(scoreHubPosx, scoreHubPosy);
@@ -57,6 +60,8 @@ public class PetersParkBluePreferred extends LinearOpMode {
         scoringMech.init(hardwareMap);
         sensor.init(hardwareMap);
         cv.init(hardwareMap);
+        odoSys.init(hardwareMap, true);
+
 
         //drive train + async updates of mechanisms
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -74,7 +79,7 @@ public class PetersParkBluePreferred extends LinearOpMode {
                 .waitSeconds(2)
                 .setReversed(true)
                 .lineToLinearHeading(new Pose2d(scoreHubPosB, Math.toRadians(scoreHubPosAngB)))                .UNSTABLE_addTemporalMarkerOffset(0,()->{
-                    scoringMech.release();
+                    scoringMech.releaseHard();
                 })
                 .waitSeconds(1)
                 .lineToLinearHeading(repositionB)

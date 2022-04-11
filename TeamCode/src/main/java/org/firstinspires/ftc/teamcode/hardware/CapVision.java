@@ -1,22 +1,31 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.checkerframework.common.reflection.qual.GetConstructor;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
-import org.firstinspires.ftc.teamcode.hardware.kellen;
-
+import org.firstinspires.ftc.teamcode.hardware.util.kellen;
+@Config
 public class CapVision extends Mechanism {
+    //camera object
     private OpenCvWebcam webcam;
-    private kellen regions = new kellen();
+    public static boolean preview = true;
+    //pipeline
+    public static String color = "green";
+    private kellen regions = new kellen(color);
+    int viewid;
+
     @Override
     public void init(HardwareMap hwMap) {
-        //viewid = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hwMap.get(WebcamName.class, "camera"));
-        //webcam.setMillisecondsPermissionTimeout(1000); // Timeout for obtaining permission is configurable. Set before opening.
+        viewid = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
+        if(preview) webcam = OpenCvCameraFactory.getInstance().createWebcam(hwMap.get(WebcamName.class, "camera"),viewid);
+        else webcam = OpenCvCameraFactory.getInstance().createWebcam(hwMap.get(WebcamName.class, "camera"));
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
@@ -39,7 +48,12 @@ public class CapVision extends Mechanism {
                  * For a rear facing camera or a webcam, rotation is defined assuming the camera is facing
                  * away from the user.
                  */
-                webcam.startStreaming(320, 180, OpenCvCameraRotation.UPRIGHT);
+                //webcam.startStreaming(320, 180, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+
+                FtcDashboard.getInstance().startCameraStream(webcam, 0);
+                setPipeline();
+
             }
             @Override
             public void onError(int errorCode)
@@ -51,10 +65,13 @@ public class CapVision extends Mechanism {
         });
 
     }
+
+    //set pipeline within the linear opmode
     public void setPipeline(){
         webcam.setPipeline(regions);
     }
     public int whichRegion() {
         return regions.whichRegion();
     }
+
 }

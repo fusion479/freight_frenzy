@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -20,19 +21,19 @@ public class RetractableOdoSys extends ServoMechanism{
     private boolean released = true;
 
     //LEFT LIMITS HERE
-    public static double LIMIT_LEFT_START = 0.0;
-    public static double LIMIT_LEFT_END = 0.0;
-    ServoManager left = new ServoManager("LEFTHWMAPNAMEHERE",LIMIT_LEFT_START,LIMIT_LEFT_END);
+    public static double LIMIT_LEFT_START = 0.42;
+    public static double LIMIT_LEFT_END = 1.0;
+    ServoManager left = new ServoManager("odoLeft",LIMIT_LEFT_START,LIMIT_LEFT_END);
 
     //RIGHT LIMITS HERE
-    public static double LIMIT_RIGHT_START = 0;
-    public static double LIMIT_RIGHT_END = 0;
-    ServoManager right = new ServoManager("RIGHTHWMAPNAMEHERE",LIMIT_RIGHT_START,LIMIT_RIGHT_END);
+    public static double LIMIT_RIGHT_START = 0.95;
+    public static double LIMIT_RIGHT_END = 0.45;
+    ServoManager right = new ServoManager("odoRight",LIMIT_RIGHT_START,LIMIT_RIGHT_END);
 
     //FRONT LIMITS HERE
-    public static double LIMIT_FRONT_START = 0;
-    public static double LIMIT_FRONT_END = 0;
-    ServoManager front = new ServoManager("FRONTHWMAPNAMEHERE",LIMIT_FRONT_START,LIMIT_FRONT_END);
+    public static double LIMIT_FRONT_START = 0.25;
+    public static double LIMIT_FRONT_END = 0.85;
+    ServoManager front = new ServoManager("odoFront",LIMIT_FRONT_START,LIMIT_FRONT_END);
 
     ServoManager[] odoRetractors = {left,right,front};
     @Override
@@ -41,13 +42,23 @@ public class RetractableOdoSys extends ServoMechanism{
         right.init(hwMap);
         front.init(hwMap);
 
-
-//        left = hwMap.servo.get("leftServo");
+///        left = hwMap.servo.get("leftServo");
 //        right = hwMap.servo.get("rightServo");
 //        front = hwMap.servo.get("frontServo");
     }
 
+    public void init(HardwareMap hwMap, boolean auton){
+        init(hwMap);
+        if(auton){
+            release();
+        }
+        else{
+            retract();
+        }
+    }
+
     @Override
+    @Deprecated
     public void run(boolean bool) {
         if(bool){
             formerBool = true;
@@ -58,28 +69,55 @@ public class RetractableOdoSys extends ServoMechanism{
         }
     }
 
+    /**
+     * retracts odo
+     */
     private void retract(){
         for(int i = 0; i < odoRetractors.length;i++){
             odoRetractors[i].startPos();
         }
+        released = false;
     }
 
+    /**
+     * releases odo
+     */
     private void release(){
         for(int i = 0; i < odoRetractors.length;i++){
             odoRetractors[i].endPos();
         }
+        released = true;
     }
 
+    /**
+     *
+     * @return true if odo is released
+     */
     public boolean isReleased(){
         return released;
     }
 
+    /**
+     * toggles between release and retract
+     */
     public void toggle(){
         if(isReleased()){
             retract();
         }
         else{
             release();
+
         }
+    }
+
+    public void updateEndPoints(HardwareMap hwMap){
+        left = new ServoManager("odoLeft",LIMIT_LEFT_START,LIMIT_LEFT_END);
+        right = new ServoManager("odoRight",LIMIT_RIGHT_START,LIMIT_RIGHT_END);
+        front = new ServoManager("odoFront",LIMIT_FRONT_START,LIMIT_FRONT_END);
+
+        left.init(hwMap);
+        right.init(hwMap);
+        front.init(hwMap);
+
     }
 }

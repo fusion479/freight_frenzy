@@ -11,19 +11,22 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.hardware.CapVision;
 import org.firstinspires.ftc.teamcode.hardware.Carousel;
-import org.firstinspires.ftc.teamcode.hardware.DelayCommand;
+import org.firstinspires.ftc.teamcode.hardware.RetractableOdoSys;
+import org.firstinspires.ftc.teamcode.hardware.util.DelayCommand;
 import org.firstinspires.ftc.teamcode.hardware.FreightSensor;
 import org.firstinspires.ftc.teamcode.hardware.LiftScoringV2;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Config
-@Autonomous
+@Autonomous (group = "RedAuton")
 public class StevensDuckyRed extends LinearOpMode {
     private CapVision cv = new CapVision();
     private Carousel carousel = new Carousel();
     private DelayCommand delay = new DelayCommand();
     private FreightSensor sensor = new FreightSensor();
     private LiftScoringV2 scoringMech= new LiftScoringV2();
+    private RetractableOdoSys odoSys = new RetractableOdoSys();
+
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
 
@@ -35,7 +38,7 @@ public class StevensDuckyRed extends LinearOpMode {
     public static double scoreHubPosy = 40;
 
     public static double scoreHubPosAngB = -25;
-    public static double scoreHubPosAngR = 15;
+    public static double scoreHubPosAngR = 25;
 
     public static double carouselPosx = -62;
     public static double carouselPosy = 64;
@@ -45,7 +48,7 @@ public class StevensDuckyRed extends LinearOpMode {
     public static double parkY = 42;
     public static double parkAng = Math.toRadians(180);
 
-    public static String goal = "";
+    public static String goal = "highgoal";
 
     Pose2d startPosR = new Pose2d(startx, -starty, -startAng);
     Vector2d scoreHubPosR = new Vector2d(scoreHubPosx, -scoreHubPosy);
@@ -61,6 +64,8 @@ public class StevensDuckyRed extends LinearOpMode {
         scoringMech.init(hardwareMap);
         sensor.init(hardwareMap);
         cv.init(hardwareMap);
+        odoSys.init(hardwareMap, true);
+
 
         //drive train + async updates of mechanisms
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -77,7 +82,7 @@ public class StevensDuckyRed extends LinearOpMode {
                 .setReversed(true)
                 .splineTo(scoreHubPosR, Math.toRadians(scoreHubPosAngR))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    scoringMech.release();
+                    scoringMech.releaseHard();
                 })
                 .waitSeconds(1)
                 // slides
@@ -123,13 +128,13 @@ public class StevensDuckyRed extends LinearOpMode {
             telemetry.update();
         }
         if(cv.whichRegion() == 1) {
-            goal = "highgoal";
+            goal = "lowgoal";
         }
         if(cv.whichRegion() == 2) {
             goal = "midgoal";
         }
         if(cv.whichRegion() == 3) {
-            goal = "lowgoal";
+            goal = "highgoal";
         }
         telemetry.addData("goal: ",goal);
         telemetry.addData("region", cv.whichRegion());

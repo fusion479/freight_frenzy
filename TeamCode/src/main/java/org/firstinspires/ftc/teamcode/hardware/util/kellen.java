@@ -1,4 +1,6 @@
-package org.firstinspires.ftc.teamcode.hardware;
+package org.firstinspires.ftc.teamcode.hardware.util;
+
+import com.acmerobotics.dashboard.config.Config;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -8,18 +10,23 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
-
-public class kellen extends OpenCvPipeline
-{
+@Config
+public class kellen extends OpenCvPipeline {
+    //pipe line class for detecting capstone (or objects in three different regions)
+    //default color detections set to lime green
     public kellen() {
-
+        color = "red";
+    }
+    public kellen(String choice) {
+        color = choice;
     }
     boolean viewportPaused;
 
     private Mat workingMatrix = new Mat();
-
+    private Scalar lowHSV;
+    private Scalar highHSV;
     private double b1p, b2p, b3p;
-
+    private String color;
     private Rect RO1;
     private Rect RO2;
     private Rect RO3;
@@ -35,8 +42,35 @@ public class kellen extends OpenCvPipeline
         NORMALLY, HSV is defined like so: Hue in range 0-360, Saturation in range 0.0-1.0 and Value in range 0.0-1.0.
         All of this is also technically BGR to HSV, so take the absolute value of your Hue minus 180 to get the right number
         */
-        Scalar lowHSV = new Scalar(40, 50, 50);
-        Scalar highHSV = new Scalar(75, 255, 255);
+        if(color == "green") {
+            lowHSV = new Scalar(40, 50, 50);
+            highHSV = new Scalar(75, 255, 255);
+        }
+        if(color == "red") {
+            lowHSV = new Scalar(160, 50, 50);
+            highHSV = new Scalar(180, 255, 255);
+        }
+        if(color == "blue") {
+            lowHSV = new Scalar(110, 50, 50);
+            highHSV = new Scalar(120, 255, 255);
+        }
+        if(color == "purple") {
+            lowHSV = new Scalar(135, 50, 50);
+            highHSV = new Scalar(155, 255, 255);
+        }
+        if(color == "cyan") {
+            lowHSV = new Scalar(80, 50, 50);
+            highHSV = new Scalar(95, 255, 255);
+        }
+        if(color == "yellow") {
+            lowHSV = new Scalar(20, 55, 55);
+            highHSV = new Scalar(35, 255, 255);
+        }
+        if(color == "orange") {
+            lowHSV = new Scalar(0, 50, 50);
+            highHSV = new Scalar(20, 255, 255);
+        }
+
         //This creates our mask, and filters out all colors except for whats within our defined bound
             /* IGNORE ALL OF THIS FOR NOW, but essentially we'll use this to tell where our capstone is by counting pixels
 

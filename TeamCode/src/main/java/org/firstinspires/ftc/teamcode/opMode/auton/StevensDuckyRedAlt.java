@@ -12,13 +12,14 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.hardware.Acquirer;
 import org.firstinspires.ftc.teamcode.hardware.CapVision;
 import org.firstinspires.ftc.teamcode.hardware.Carousel;
-import org.firstinspires.ftc.teamcode.hardware.DelayCommand;
+import org.firstinspires.ftc.teamcode.hardware.RetractableOdoSys;
+import org.firstinspires.ftc.teamcode.hardware.util.DelayCommand;
 import org.firstinspires.ftc.teamcode.hardware.FreightSensor;
 import org.firstinspires.ftc.teamcode.hardware.LiftScoringV2;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Config
-@Autonomous
+@Autonomous (group = "RedAuton")
 public class StevensDuckyRedAlt extends LinearOpMode {
     private Acquirer intake = new Acquirer();
     private CapVision cv = new CapVision();
@@ -26,6 +27,8 @@ public class StevensDuckyRedAlt extends LinearOpMode {
     private DelayCommand delay = new DelayCommand();
     private FreightSensor sensor = new FreightSensor();
     private LiftScoringV2 scoringMech = new LiftScoringV2();
+    private RetractableOdoSys odoSys = new RetractableOdoSys();
+
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
 
@@ -34,10 +37,10 @@ public class StevensDuckyRedAlt extends LinearOpMode {
     public static double startAng = Math.toRadians(90);
 
     public static double scoreHubPosx = -34;
-    public static double scoreHubPosy = 43;
+    public static double scoreHubPosy = 38;
 
     public static double scoreHubPosAngB = -25;
-    public static double scoreHubPosAngR = 15;
+    public static double scoreHubPosAngR = 25;
 
     public static double carouselPosx = -62;
     public static double carouselPosy = 64;
@@ -48,17 +51,17 @@ public class StevensDuckyRedAlt extends LinearOpMode {
     public static double parkAng = Math.toRadians(180);
 
     public static double reposX = -34;
-    public static double reposY = -36;
+    public static double reposY = 36;
+
+    public static double preSweepY = 48;
+    public static double sweepX = -40;
+    public static double sweepY = 67;
 
     public static double duckX = -58;
     public static double duckY = -65;
 
-    public static String goal = "midgoal";
+    public static String goal = "highgoal";
 
-    Pose2d startPosR = new Pose2d(startx, -starty, -startAng);
-    Vector2d scoreHubPosR = new Vector2d(scoreHubPosx, -scoreHubPosy);
-    Pose2d carouselPosR = new Pose2d(carouselPosx, -carouselPosy, carouselPosAng);
-    Pose2d parkR = new Pose2d(parkX, -parkY, parkAng);
 
 
     @Override
@@ -70,13 +73,22 @@ public class StevensDuckyRedAlt extends LinearOpMode {
         sensor.init(hardwareMap);
         cv.init(hardwareMap);
         intake.init(hardwareMap);
+        odoSys.init(hardwareMap, true);
+
 
         //drive train + async updates of mechanisms
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         drive.setSlides(scoringMech);
 
         //important coordinates here
-
+        Pose2d startPosR = new Pose2d(startx, -starty, -startAng);
+        Vector2d scoreHubPosR = new Vector2d(scoreHubPosx, -scoreHubPosy);
+        Pose2d carouselPosR = new Pose2d(carouselPosx, -carouselPosy, carouselPosAng);
+        Pose2d parkR = new Pose2d(parkX, -parkY, parkAng);
+        Pose2d reposition = new Pose2d(reposX, -reposY, Math.toRadians(270));
+        Vector2d preSweep = new Vector2d(reposX,-preSweepY);
+        Vector2d sweepPos = new Vector2d(sweepX, -sweepY);
+        Pose2d postSweep = new Pose2d(duckX, -sweepY, Math.toRadians(270));
         //set startPose
         drive.setPoseEstimate(startPosR);
 
@@ -85,7 +97,7 @@ public class StevensDuckyRedAlt extends LinearOpMode {
                 .setReversed(true)
                 .splineTo(scoreHubPosR, Math.toRadians(scoreHubPosAngR))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    scoringMech.release();
+                    scoringMech.releaseSoft();
                 })
                 .waitSeconds(1)
                 // slides
@@ -94,31 +106,30 @@ public class StevensDuckyRedAlt extends LinearOpMode {
                     carousel.run(false, true);
                 })
                 .waitSeconds(7)
-                .lineToSplineHeading(new Pose2d(reposX, reposY, Math.toRadians(270)))
-                .lineTo(new Vector2d( reposX, reposY - 12))
+                .lineToSplineHeading(reposition)
+                .lineTo(preSweep)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     intake.intake(1);
                 })
-                .splineTo(new Vector2d(-40, duckY-2), Math.toRadians(180))
+                .splineTo(sweepPos, Math.toRadians(180))
                 //.splineTo(new Vector2d(duckX, duckY), Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(duckX, duckY-2, Math.toRadians(225)))
+                .lineToLinearHeading(postSweep)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     intake.intake(0);
                 })
                 .setReversed(true)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    scoringMech.toggle("midgoal");
+                    scoringMech.toggle("highgoal");
                 })
                 .splineTo(scoreHubPosR, Math.toRadians(scoreHubPosAngR))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    scoringMech.release();
+                    scoringMech.releaseSoft();
                 })
                 .waitSeconds(1)
                 .lineToSplineHeading(parkR)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     carousel.run(false, false);
                 })
-
                 .build();
 
         //3ftx3ftmovement
@@ -151,13 +162,13 @@ public class StevensDuckyRedAlt extends LinearOpMode {
             telemetry.update();
         }
         if (cv.whichRegion() == 1) {
-            goal = "highgoal";
+            goal = "lowgoal";
         }
         if (cv.whichRegion() == 2) {
             goal = "midgoal";
         }
         if (cv.whichRegion() == 3) {
-            goal = "lowgoal";
+            goal = "highgoal";
         }
         telemetry.addData("goal: ", goal);
         telemetry.addData("region", cv.whichRegion());

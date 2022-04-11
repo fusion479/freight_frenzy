@@ -28,6 +28,7 @@ public class MeccRobotTeleOp extends LinearOpMode{
     @Override
     public void runOpMode() throws InterruptedException{
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
+
         robot.init(hardwareMap,telemetry,timer);
 
 
@@ -36,7 +37,7 @@ public class MeccRobotTeleOp extends LinearOpMode{
             telemetry.update();
         }
         while(opModeIsActive()){
-            robot.run(gamepad1);
+            robot.run(gamepad1,gamepad2);
             //These are the RATIO positions of the servos
 //            telemetry.addData("kF: ",lift.kF);
 //            telemetry.addData("kP: ", lift.coeffs.kP);

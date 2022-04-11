@@ -5,30 +5,21 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.hardware.Acquirer;
 import org.firstinspires.ftc.teamcode.hardware.CapVision;
 import org.firstinspires.ftc.teamcode.hardware.Carousel;
-import org.firstinspires.ftc.teamcode.hardware.DelayCommand;
+import org.firstinspires.ftc.teamcode.hardware.RetractableOdoSys;
+import org.firstinspires.ftc.teamcode.hardware.util.DelayCommand;
 import org.firstinspires.ftc.teamcode.hardware.FreightSensor;
-import org.firstinspires.ftc.teamcode.hardware.Lift;
 import org.firstinspires.ftc.teamcode.hardware.LiftScoringV2;
-import org.firstinspires.ftc.teamcode.hardware.ScoringArm;
-import org.firstinspires.ftc.teamcode.hardware.kellen;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
-import org.openftc.easyopencv.OpenCvCamera;
 
 @Config
-@Autonomous
+@Autonomous (group = "RedAuton")
 public class StevensDuckyRedW extends LinearOpMode {
     private Acquirer intake = new Acquirer();
     private CapVision cv = new CapVision();
@@ -36,6 +27,8 @@ public class StevensDuckyRedW extends LinearOpMode {
     private DelayCommand delay = new DelayCommand();
     private FreightSensor sensor = new FreightSensor();
     private LiftScoringV2 scoringMech= new LiftScoringV2();
+    private RetractableOdoSys odoSys = new RetractableOdoSys();
+
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
 
@@ -44,10 +37,10 @@ public class StevensDuckyRedW extends LinearOpMode {
     public static double startAng = Math.toRadians(90);
 
     public static double scoreHubPosx = -34;
-    public static double scoreHubPosy = 43;
+    public static double scoreHubPosy = 38;
 
     public static double scoreHubPosAngB = -25;
-    public static double scoreHubPosAngR = 25;
+    public static double scoreHubPosAngR = 30;
 
     public static double carouselPosx = -62;
     public static double carouselPosy = 62;
@@ -60,17 +53,19 @@ public class StevensDuckyRedW extends LinearOpMode {
     public static double reposX = -34;
     public static double reposY = 36;
 
+    public static double preSweepY = 48;
+    public static double sweepX = -34;
+    public static double sweepY = 67;
+
     public static double duckX = -58;
-    public static double duckY = -68;
+    public static double preParkY = 48;
 
-    public static String goal = "midgoal";
+    public static double enterX = 15;
+    public static double enterY = 71.5;
+    public static String goal = "highgoal";
 
-    Pose2d startPosR = new Pose2d(startx, -starty, startAng);
-    Vector2d scoreHubPosR = new Vector2d(scoreHubPosx, -scoreHubPosy);
-    Pose2d carouselPosR = new Pose2d(carouselPosx, -carouselPosy, carouselPosAng);
-    Pose2d parkB = new Pose2d(parkX, parkY, parkAng);
-
-
+    public static double parkTimer = 1750;
+    public static double parkAngleOffset = 7;
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
@@ -80,16 +75,23 @@ public class StevensDuckyRedW extends LinearOpMode {
         scoringMech.init(hardwareMap);
         sensor.init(hardwareMap);
         cv.init(hardwareMap);
+        odoSys.init(hardwareMap, true);
 
         //drive train + async updates of mechanisms
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         drive.setSlides(scoringMech);
 
         //important coordinates here
-        Pose2d startPos = new Pose2d(startx,-starty, startAng);
-        Vector2d scoreHubPos = new Vector2d(scoreHubPosx,-scoreHubPosy);
-        Pose2d carouselPos = new Pose2d(carouselPosx,-carouselPosy,carouselPosAng);
-        Pose2d park = new Pose2d(parkX,-parkY,parkAng);
+        Pose2d startPosR = new Pose2d(startx, -starty, -startAng);
+        Vector2d scoreHubPosR = new Vector2d(scoreHubPosx, -scoreHubPosy);
+        Pose2d carouselPosR = new Pose2d(carouselPosx, -carouselPosy, carouselPosAng);
+        Pose2d parkR = new Pose2d(parkX, -parkY, parkAng);
+        Pose2d reposition = new Pose2d(reposX, -reposY, Math.toRadians(270));
+        Vector2d preSweep = new Vector2d(reposX,-preSweepY);
+        Vector2d sweepPos = new Vector2d(sweepX, -sweepY);
+        Pose2d postSweep = new Pose2d(duckX, -sweepY, Math.toRadians(210));
+        Pose2d prePark = new Pose2d(scoreHubPosx, -preParkY, Math.toRadians(0));
+        Pose2d bEnter = new Pose2d(enterX, -enterY, Math.toRadians(0));
 
         //set startPose
         drive.setPoseEstimate(startPosR);
@@ -100,27 +102,27 @@ public class StevensDuckyRedW extends LinearOpMode {
                 .setReversed(true)
                 .splineTo(scoreHubPosR,Math.toRadians(scoreHubPosAngR))
                 .UNSTABLE_addTemporalMarkerOffset(0,()->{
-                    scoringMech.release();
+                    scoringMech.releaseSoft();
                 })
                 .waitSeconds(1)
                 //slides
                 .lineToSplineHeading(carouselPosR)
                 .UNSTABLE_addTemporalMarkerOffset(0,()->{
-                    carousel.run(true,false);
+                    carousel.run(false,true);
                 })
-                .waitSeconds(4)
+                .waitSeconds(3.0)
                 //carousel
                 .UNSTABLE_addTemporalMarkerOffset(0,()->{
                     carousel.run(false,false);
                 })
-                .lineToSplineHeading(new Pose2d(reposX, reposY, Math.toRadians(90)))
-                .lineTo(new Vector2d( reposX, reposY + 12))
+                .lineToSplineHeading(reposition)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     intake.intake(1);
                 })
-                .splineTo(new Vector2d(-40, duckY-2), Math.toRadians(180))
+                .lineTo(preSweep)
+                .splineTo(sweepPos, Math.toRadians(180))
                 //.splineTo(new Vector2d(duckX, duckY), Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(duckX, duckY-2, Math.toRadians(90)))
+                .lineToLinearHeading(postSweep)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     intake.intake(0);
                 })
@@ -130,16 +132,24 @@ public class StevensDuckyRedW extends LinearOpMode {
                 })
                 .splineTo(scoreHubPosR, Math.toRadians(scoreHubPosAngR))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    scoringMech.release();
+                    scoringMech.releaseSoft();
                 })
                 .waitSeconds(1)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     carousel.run(false, false);
                 })
-                .lineToLinearHeading(new Pose2d(scoreHubPosx, -scoreHubPosy-10, Math.toRadians(0)))
-                .forward(30)
-                .splineToSplineHeading(new Pose2d(15, -71.5, Math.toRadians(0)), Math.toRadians(0))
-                .forward(30)
+                .lineToLinearHeading(prePark)
+                .forward(15)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    odoSys.toggle();
+                })
+                .waitSeconds(0.5)
+                .UNSTABLE_addTemporalMarkerOffset(0,()->{
+                    delay.delay(()->{
+                        this.requestOpModeStop();
+                    }, (int)parkTimer);
+                })
+                .forward(45)
                 .build();
 
         //3ftx3ftmovement
@@ -172,13 +182,13 @@ public class StevensDuckyRedW extends LinearOpMode {
             telemetry.update();
         }
         if(cv.whichRegion() == 1) {
-            goal = "highgoal";
+            goal = "lowgoal";
         }
         if(cv.whichRegion() == 2) {
             goal = "midgoal";
         }
         if(cv.whichRegion() == 3) {
-            goal = "lowgoal";
+            goal = "highgoal";
         }
         telemetry.addData("goal: ",goal);
         telemetry.addData("region", cv.whichRegion());
@@ -186,5 +196,6 @@ public class StevensDuckyRedW extends LinearOpMode {
 
         scoringMech.toggle(goal);
         drive.followTrajectorySequence(duckyPath);
+
     }
 }
