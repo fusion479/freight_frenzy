@@ -15,7 +15,7 @@ public class kellen extends OpenCvPipeline {
     //pipe line class for detecting capstone (or objects in three different regions)
     //default color detections set to lime green
     public kellen() {
-        color = "red";
+        color = "green";
     }
     public kellen(String choice) {
         color = choice;
@@ -86,8 +86,8 @@ public class kellen extends OpenCvPipeline {
             Imgproc.rectangle(workingMatrix,ROI,lines);*/
         RO1 = new Rect(
                 new Point(
-                        input.cols()/8,
-                        input.rows()/4),
+                        0,
+                        0),
                 new Point(
                         input.cols()*(3f/8f),
                         input.rows()*(3f/4f))
@@ -105,8 +105,8 @@ public class kellen extends OpenCvPipeline {
                         input.cols()*(5f/8f),
                         input.rows()/4),
                 new Point(
-                        input.cols()*(7f/8f),
-                        input.rows()*(3f/4f))
+                        input.cols(),
+                        input.rows())
         );
         /*Imgproc.rectangle(workingMatrix, RO1, new Scalar(60, 255, 255), 10);
         Imgproc.rectangle(workingMatrix, RO2, new Scalar(60, 255, 255), 10);
