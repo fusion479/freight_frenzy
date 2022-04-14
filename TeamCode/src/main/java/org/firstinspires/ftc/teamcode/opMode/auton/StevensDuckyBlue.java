@@ -35,8 +35,8 @@ public class StevensDuckyBlue extends LinearOpMode {
     public static double starty = 70.0;
     public static double startAng = Math.toRadians(90);
 
-    public static double scoreHubPosx = -32;
-    public static double scoreHubPosy = 25;
+    public static double scoreHubPosx = -34;
+    public static double scoreHubPosy = 29;
 
     public static double scoreHubPosAngB = -45
             ;
@@ -86,7 +86,7 @@ public class StevensDuckyBlue extends LinearOpMode {
         TrajectorySequence duckyPath = drive.trajectorySequenceBuilder(startPos)
                 .waitSeconds(1)
                 .setReversed(true)
-                .splineTo(new Vector2d(parkX, parkY),Math.toRadians(90))
+                .splineTo(new Vector2d(parkX, parkY),Math.toRadians(270))
                 .splineTo(scoreHubPosB, Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0,()->{
                     scoringMech.releaseHard();
@@ -95,6 +95,7 @@ public class StevensDuckyBlue extends LinearOpMode {
                 //slides
                 .setReversed(false)
                 .splineTo(new Vector2d(parkX, parkY), Math.toRadians(90))
+                .lineToSplineHeading(carouselPosB)
                 .UNSTABLE_addTemporalMarkerOffset(0,()->{
                     carousel.run(true,false);
                 })

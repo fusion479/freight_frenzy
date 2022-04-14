@@ -35,8 +35,8 @@ public class StevensDuckyRed extends LinearOpMode {
     public static double starty = 70.0;
     public static double startAng = Math.toRadians(90);
 
-    public static double scoreHubPosx = -32;
-    public static double scoreHubPosy = 48;
+    public static double scoreHubPosx = -34;
+    public static double scoreHubPosy = 29;
 
     public static double scoreHubPosAngB = -25;
     public static double scoreHubPosAngR = 45;
@@ -62,8 +62,9 @@ public class StevensDuckyRed extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         //initialize mechanisms
         carousel.init(hardwareMap);
-        scoringMech.init(hardwareMap);
         sensor.init(hardwareMap);
+
+        scoringMech.init(hardwareMap, sensor);
         cv.init(hardwareMap);
         odoSys.init(hardwareMap, true);
 
@@ -81,12 +82,15 @@ public class StevensDuckyRed extends LinearOpMode {
         TrajectorySequence duckyPath = drive.trajectorySequenceBuilder(startPosR)
                 .waitSeconds(1)
                 .setReversed(true)
-                .splineTo(scoreHubPosR, Math.toRadians(scoreHubPosAngR))
+                .splineTo(new Vector2d(parkX, -parkY), Math.toRadians(90))
+                .splineTo(scoreHubPosR, Math.toRadians(0))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     scoringMech.releaseHard();
                 })
                 .waitSeconds(1)
                 // slides
+                .setReversed(false)
+                .splineTo(new Vector2d(parkX, -parkY), Math.toRadians(270))
                 .lineToSplineHeading(carouselPosR)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     carousel.run(false,true);
@@ -147,7 +151,7 @@ public class StevensDuckyRed extends LinearOpMode {
         ElapsedTime timer = new ElapsedTime();
         while(timer.seconds() <= 2) {
             if(timer.seconds() <= 1) {
-                carousel.rrrun(timer, 1);
+                carousel.rrrun(timer, -1);
             }else {
                 carousel.runmax(false, true);
             }

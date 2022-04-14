@@ -90,14 +90,14 @@ public class MeccRobotPrototyping extends Mechanism{
     BooleanManager rightBumper2 = new BooleanManager(new Runnable() {
         @Override
         public void run() {
-            scoringV2.toggle("highgoal");
+            scoring.toggleHigh();
         }
     });
 
     BooleanManager aButton2 = new BooleanManager(new Runnable() {
         @Override
         public void run() {
-            if(scoringV2.goalReach.equals("highgoal")) capper.release();
+            capper.release();
         }
     });
     BooleanManager bButton2 = new BooleanManager(new Runnable() {
@@ -122,7 +122,7 @@ public class MeccRobotPrototyping extends Mechanism{
     BooleanManager leftBumper2 = new BooleanManager(new Runnable() {
         @Override
         public void run() {
-            scoringV2.toggle("midgoal");
+            scoring.toggleMid();
         }
     });
 
