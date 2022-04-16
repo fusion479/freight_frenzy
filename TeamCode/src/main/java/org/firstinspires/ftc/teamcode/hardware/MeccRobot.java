@@ -68,6 +68,13 @@ public class MeccRobot extends Mechanism{
             soft_dump = !soft_dump;
         }
     });
+    BooleanManager rightDPadButtonManager = new BooleanManager(new Runnable() {
+        @Override
+        public void run() {
+            cDir *= -1;
+
+        }
+    });
 
 
     BooleanManager rightBumperManager = new BooleanManager(()->{
@@ -300,21 +307,16 @@ public class MeccRobot extends Mechanism{
      * @param gamepad1 gamepad input
      */
     public void mpCR(Gamepad gamepad1){
-        boolean input = gamepad1.dpad_left ^ gamepad1.dpad_right;
-        if(gamepad1.dpad_right) {
-            cDir = -1;
-        }else {
-            cDir = 1;
-        }
+
         if(!formerDpadL){
-            if(input){
+            if(gamepad1.dpad_left){
                 timer.reset();
             }
         }
 
-        if(input) {
+        if(gamepad1.dpad_left) {
             if(timer.seconds() <= 1) {
-                carousel.rrrun(timer, 1);
+                carousel.rrrun(timer, cDir);
             }else {
                 if(cDir == 1) {
                     carousel.runmax(true, false);
@@ -329,6 +331,7 @@ public class MeccRobot extends Mechanism{
             carousel.run(false);
             formerDpadL = false;
         }
+        rightDPadButtonManager.update(gamepad1.dpad_right);
     }
 
     public void capperControl(Gamepad gamepad2){

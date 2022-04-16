@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.hardware.MeccRobot;
 import org.firstinspires.ftc.teamcode.hardware.ScoringArm;
 
 @Config
-@TeleOp(name="MeccRobotTeleOp",group="TeleOp")
+@TeleOp(name="MeccRobotTeleOpISH",group="TeleOp")
 
 public class MeccRobotTeleOp extends LinearOpMode{
     private MeccRobot robot = new MeccRobot();
