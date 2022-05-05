@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -9,10 +10,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.hardware.util.BooleanManager;
-
+@Config
 public class MeccRobotPrototyping extends Mechanism{
     private boolean debug = true;
-
+    public static double carotime = 1.5;
     //Mechanisms Utilized
     private SampleMecanumDrive drive;
     int left_stick_inverted =  1;
@@ -135,8 +136,8 @@ public class MeccRobotPrototyping extends Mechanism{
         acquirer.init(hwMap);
         carousel.init(hwMap);
         scoring.init(hwMap);
-        odoSys.init(hwMap);
-        odoSys.toggle();
+        odoSys.init(hwMap, false);
+        odoSys.retract();
         capper.init(hwMap);
 
 //        senseHub.init(hwMap);
@@ -150,7 +151,7 @@ public class MeccRobotPrototyping extends Mechanism{
     public void init(HardwareMap hwmap, Telemetry telemetry){
         init(hwmap);
         this.telemetry = telemetry;
-        odoSys.toggle();
+        odoSys.retract();
 
     }
 
@@ -164,7 +165,7 @@ public class MeccRobotPrototyping extends Mechanism{
         init(hwmap);
         this.telemetry = telemetry;
         this.timer = timer;
-        odoSys.toggle();
+        odoSys.retract();
     }
 
     /**
@@ -322,7 +323,7 @@ public class MeccRobotPrototyping extends Mechanism{
             cDir = 1;
         }
         if(input) {
-            if(timer.seconds() <= 1) {
+            if(timer.seconds() <= carotime) {
                 carousel.rrrun(timer, cDir);
             }else {
                 if(cDir == 1) {

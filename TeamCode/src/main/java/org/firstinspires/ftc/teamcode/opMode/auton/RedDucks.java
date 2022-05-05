@@ -45,7 +45,7 @@ public class RedDucks extends LinearOpMode {
     public static double carouselPosy = 64;
     public static double carouselPosAng = Math.toRadians(270);
 
-    public static double parkX = -60;
+    public static double parkX = -63;
     public static double parkY = 44;
     public static double parkAng = Math.toRadians(180);
 
@@ -149,8 +149,8 @@ public class RedDucks extends LinearOpMode {
         scoringMech.toggle(goal);
         drive.followTrajectorySequence(duckyPath);
         ElapsedTime timer = new ElapsedTime();
-        while(timer.seconds() <= 2) {
-            if(timer.seconds() <= 1) {
+        while(timer.seconds() <= 7) {
+            if(timer.seconds() <= 5) {
                 carousel.rrrun(timer, -1);
             }else {
                 carousel.runmax(false, true);

@@ -134,7 +134,7 @@ public class MeccRobot extends Mechanism{
         acquirer.init(hwMap);
         carousel.init(hwMap);
         scoringV2.init(hwMap,blockSense);
-        odoSys.init(hwMap);
+        odoSys.init(hwMap, false);
         capper.init(hwMap);
 
 //        senseHub.init(hwMap);

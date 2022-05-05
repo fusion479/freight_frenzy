@@ -72,7 +72,7 @@ public class RetractableOdoSys extends ServoMechanism{
     /**
      * retracts odo
      */
-    private void retract(){
+    public void retract(){
         for(int i = 0; i < odoRetractors.length;i++){
             odoRetractors[i].startPos();
         }
@@ -82,7 +82,7 @@ public class RetractableOdoSys extends ServoMechanism{
     /**
      * releases odo
      */
-    private void release(){
+    public void release(){
         for(int i = 0; i < odoRetractors.length;i++){
             odoRetractors[i].endPos();
         }

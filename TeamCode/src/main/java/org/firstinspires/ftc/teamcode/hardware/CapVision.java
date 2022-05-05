@@ -17,7 +17,7 @@ public class CapVision extends Mechanism {
     private OpenCvWebcam webcam;
     public static boolean preview = true;
     //pipeline
-    public static String color = "green";
+    public static String color = "yellow";
     private kellen regions = new kellen(color);
     int viewid;
 

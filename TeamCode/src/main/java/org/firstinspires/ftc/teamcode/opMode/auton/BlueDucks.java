@@ -152,8 +152,8 @@ public class BlueDucks extends LinearOpMode {
         scoringMech.toggle(goal);
         drive.followTrajectorySequence(duckyPath);
         ElapsedTime timer = new ElapsedTime();
-        while(timer.seconds() <= 2) {
-            if(timer.seconds() <= 1) {
+        while(timer.seconds() <= 7) {
+            if(timer.seconds() <= 5) {
                 carousel.rrrun(timer, 1);
             }else {
                 carousel.runmax(true, false);

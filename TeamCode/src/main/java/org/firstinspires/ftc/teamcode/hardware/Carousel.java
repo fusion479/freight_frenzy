@@ -36,7 +36,7 @@ public class Carousel extends Mechanism {
 
     public static double maxV = 1;
     public static double maxA = 0.1;
-    public static double startV = 0.5;
+    public static double startV = 0.35;
     public static double startA = 0;
 
     MotionProfile profile = MotionProfileGenerator.generateSimpleMotionProfile(
