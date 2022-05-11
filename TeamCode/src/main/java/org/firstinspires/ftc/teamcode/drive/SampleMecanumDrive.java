@@ -58,8 +58,8 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(22, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(12, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
 
 
     //old value
@@ -91,14 +91,14 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     public SampleMecanumDrive(HardwareMap hardwareMap) {
 
-        this(hardwareMap, TRACK_WIDTH, kV, kA, kStatic, 4.0);
+        this(hardwareMap, TRACK_WIDTH, kV, kA, kStatic, 0);
     }
     public SampleMecanumDrive(HardwareMap hardwareMap, double hP) {
         this(hardwareMap, TRACK_WIDTH, kV, kA, kStatic, hP);
     }
     public SampleMecanumDrive(HardwareMap hardwareMap, double tW, double kv, double ka, double kS, double hP) {
         super(kv, ka, kS, tW, tW, LATERAL_MULTIPLIER);
-        TRANSLATIONAL_PID = new PIDCoefficients(5.0, 0, 0);
+        TRANSLATIONAL_PID = new PIDCoefficients(0.0, 0, 0);
         HEADING_PID = new PIDCoefficients(hP, 0, 0);
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
                 new Pose2d(0.5, 0.5, Math.toRadians(1.0)), 0.09);
