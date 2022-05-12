@@ -4,22 +4,24 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.hardware.Acquirer;
 import org.firstinspires.ftc.teamcode.hardware.ScoringArm;
+import org.firstinspires.ftc.teamcode.hardware.Turret;
 
 @TeleOp (group = "prototype")
 @Config
-public class ScoringMechTest extends LinearOpMode {
-    private ScoringArm score = new ScoringArm();
+public class TurretTest extends LinearOpMode {
+    private Turret turret = new Turret();
     //0.1
     //
     public static double position = 0.0;
     @Override
     public void runOpMode() throws InterruptedException{
-        score.init(hardwareMap);
+        turret.init(hardwareMap);
         boolean formerA = false;
         boolean formerB = false;
         boolean formerX = false;
+        boolean formerY = false;
+
         while(!opModeIsActive() && !isStopRequested()){
             telemetry.addData("Status", "Waiting in init");
             telemetry.update();
@@ -33,9 +35,8 @@ public class ScoringMechTest extends LinearOpMode {
             if(formerA){
                 if (!gamepad1.a){
                     //DO STUFF
-                    score.goToEnd();
-                    score.dumpPos();
                     formerA = false;
+                    turret.middle();
                 }
             }
 
@@ -46,9 +47,8 @@ public class ScoringMechTest extends LinearOpMode {
             if(formerB){
                 if (!gamepad1.b){
                     //DO STUFF
-                    score.goToStart();
-                    score.depositReset();
                     formerB = false;
+                    turret.right();
                 }
             }
 
@@ -59,9 +59,20 @@ public class ScoringMechTest extends LinearOpMode {
             if(formerX){
                 if (!gamepad1.x){
                     //DO STUFF
-                    score.goTo(position);
-                    score.tuckPos();
                     formerX = false;
+                    turret.left();
+                }
+            }
+
+            if (gamepad1.y){
+                formerY = true;
+            }
+
+            if(formerY){
+                if (!gamepad1.y){
+                    //DO STUFF
+                    formerY = false;
+                    turret.resetLimits();
                 }
             }
 

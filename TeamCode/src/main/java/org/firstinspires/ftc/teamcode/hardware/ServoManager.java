@@ -27,7 +27,10 @@ public class ServoManager extends ServoMechanism{
         this.armStart = armStart;
         this.armEnd = armEnd;
     }
-
+    public void resetLimits( double armStart,double armEnd){
+        this.armEnd = armEnd;
+        this.armStart = armStart;
+    }
     public void setTimeTracking(boolean setTimeTracking, double timeOfPeriod){
         //period in milliseconds
         this.setTimeTracking = setTimeTracking;

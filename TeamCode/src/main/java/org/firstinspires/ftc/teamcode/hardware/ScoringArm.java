@@ -41,7 +41,7 @@ public class ScoringArm extends ServoMechanism{
     private ServoManager head = new ServoManager("turret", LIMIT_TURRET_START, LIMIT_TURRET_END);
     /////ARM SERVO POSITIONS
     //Constants are fucked and thrown around
-    public static double armStartPos = 0.07; //homed position
+    public static double armStartPos = 0.0;//0.07; //homed position
     public static double armEndPos = 0.7; //goes to... end?
     public static double armLowGoalPos = 0.7; //goes to... far end for low goal?
     public static double armMidPos = 0.7; //goes to... the middle that's not the middle?
@@ -50,10 +50,10 @@ public class ScoringArm extends ServoMechanism{
 
     public static double armDuckPos = 0.8;
     /////DEPO SERVO POSITIONS
-    public static double depoStartPos = 0.8; //init position of depo
+    public static double depoStartPos = 0.28;//0.8; //init position of depo
     public static double depoEndPos = 1.0; //far end position of depo
-    public static double depoTuckPos= 1.0; //tuck position for movement while going upwards
-    public static double depoDumpPos_Hard = 0.2; //position to go to for dump movement HARD
+    public static double depoTuckPos= 0.35;//1.0; //tuck position for movement while going upwards
+    public static double depoDumpPos_Hard = 0.24; //0.2; //position to go to for dump movement HARD
     public static double depoDumpPos_Soft = 0.5; //position to go to for dump movement SOFT
 
     public static double depoLowGoalPos = depoStartPos; //position to go to for lowGoal prep
@@ -167,6 +167,9 @@ public class ScoringArm extends ServoMechanism{
 
     }
 
+    public void dumpPos(){
+        kicker.setPosRatio(depoDumpPos_Hard);
+    }
     public void dumpSoft() {
         kicker.setPosRatio(depoDumpPos_Soft);
         Runnable run = new Runnable() {
