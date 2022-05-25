@@ -28,6 +28,9 @@ public class TurretTest extends LinearOpMode {
         }
 //why doesnt my code work
         while(opModeIsActive()){
+
+
+
             if (gamepad1.a){
                 formerA = true;
             }
