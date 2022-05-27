@@ -1,22 +1,26 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
+@Config
 public class SCORINGFSMTurretMode extends Mechanism {
     public LIFTFSM lift = new LIFTFSM();
     public ARMFSM arm = new ARMFSM();
     public Turret turret = new Turret();
     ElapsedTime timer = new ElapsedTime();
     FreightSensor sensor = new FreightSensor();
+    public static double turretMove = 1250;
     public enum states {
         down,
         readyH,
         readyM,
         readyL,
-        score
+        score,
+        downPrep,
+        readyArm
     }
     public states scoreStates;
     @Override
@@ -39,25 +43,39 @@ public class SCORINGFSMTurretMode extends Mechanism {
                     lift.goLow();
                     arm.down();
                 }
-                turret.middle();
                 break;
             case readyH:
+                timer.reset();
                 lift.goHigh();
                 arm.ready();
-                turret.toggleDefault();
+                scoreStates = states.readyArm;
                 break;
             case readyM:
+                timer.reset();
                 lift.goMid();
                 arm.ready();
+                scoreStates = states.readyArm;
                 break;
             case readyL:
+                timer.reset();
                 lift.goLow();
                 arm.ready();
+                scoreStates = states.readyArm;
                 break;
             case score:
-                timer.reset();
                 arm.dump();
+                scoreStates = states.downPrep;
+                break;
+            case downPrep:
+                timer.reset();
+                turret.middle();
                 scoreStates = states.down;
+                break;
+
+            case readyArm:
+                if(timer.milliseconds() >= turretMove) {
+                    turret.defaultSide();
+                }
                 break;
         }
         lift.loop();
@@ -75,26 +93,43 @@ public class SCORINGFSMTurretMode extends Mechanism {
     public void score() {
         scoreStates = states.score;
     }
-    public void down() {scoreStates = states.down;}
+    public void down() {scoreStates = states.downPrep;}
     public void toggleHigh(){
-        if(scoreStates != states.readyH) {
+        if(scoreStates != states.readyArm) {
             highGoal();
         }else{
             down();
         }
     }
     public void toggleMid(){
-        if(scoreStates != states.readyM) {
+        if(scoreStates != states.readyArm) {
             midGoal();
         }else{
             down();
         }
     }
     public void toggleLow(){
-        if(scoreStates != states.readyL) {
+        if(scoreStates != states.readyArm) {
             lowGoal();
         }else{
             down();
         }
+    }
+
+    public void setDefaultSide(Turret.Side side){
+
+        turret.setDefaultSide(side);
+    }
+
+    public void setLeftDefault(){
+        setDefaultSide(Turret.Side.LEFT);
+    }
+
+    public void setRightDefault(){
+        setDefaultSide(Turret.Side.RIGHT);
+    }
+
+    public void setMiddleDefault(){
+        setDefaultSide(Turret.Side.MIDDLE);
     }
 }

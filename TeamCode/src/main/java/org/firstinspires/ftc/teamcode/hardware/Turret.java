@@ -21,6 +21,7 @@ public class Turret extends Mechanism{
     ServoManager turret = new ServoManager("turret",armStart,armEnd);
     public void init(HardwareMap hwmap){
         turret.init(hwmap);
+        middle();
     }
 
     public void resetLimits(){
@@ -53,10 +54,10 @@ public class Turret extends Mechanism{
     }
 
     public void defaultSide(){
-        if(defaultSide == side.LEFT){
+        if(defaultSide == Side.LEFT){
             left();
         }
-        else if(defaultSide == side.RIGHT){
+        else if(defaultSide == Side.RIGHT){
             right();
         }
     }

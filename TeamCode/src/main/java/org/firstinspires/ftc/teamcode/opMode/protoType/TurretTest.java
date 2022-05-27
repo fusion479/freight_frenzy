@@ -21,6 +21,7 @@ public class TurretTest extends LinearOpMode {
         boolean formerB = false;
         boolean formerX = false;
         boolean formerY = false;
+        boolean formerLBumper = false;
 
         while(!opModeIsActive() && !isStopRequested()){
             telemetry.addData("Status", "Waiting in init");
@@ -77,6 +78,26 @@ public class TurretTest extends LinearOpMode {
                     formerY = false;
                     turret.resetLimits();
                 }
+            }
+
+            if(gamepad1.left_bumper){
+                formerLBumper = true;
+            }
+
+            if(formerLBumper){
+                if(!gamepad1.left_bumper){
+                    turret.toggleDefault();
+                    formerLBumper = false;
+
+                }
+            }
+
+            if(gamepad1.dpad_left){
+                turret.defaultSide = Turret.Side.LEFT;
+            }
+
+            if(gamepad1.dpad_right){
+                turret.defaultSide = Turret.Side.RIGHT;
             }
 
             telemetry.update();
