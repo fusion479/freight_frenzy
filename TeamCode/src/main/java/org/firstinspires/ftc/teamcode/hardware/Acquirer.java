@@ -9,8 +9,8 @@ import com.acmerobotics.dashboard.config.Config;
 public class  Acquirer extends Mechanism {
     private DcMotor acquirerM;
 
-    public static double flipUpStart = 0.0;
-    public static double flipUpEnd = 1.0;
+    public static double flipUpStart = 0.8;
+    public static double flipUpEnd = 0.35;
     private ServoManager pullUpServo = new ServoManager("flipUp",flipUpStart,flipUpEnd);
 
     //tune numbers as desired
