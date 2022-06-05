@@ -121,6 +121,13 @@ public class MeccRobotPrototypingTurret extends Mechanism{
         }
     });
 
+    BooleanManager lStick2 = new BooleanManager(new Runnable() {
+        @Override
+        public void run() {
+            acquirer.toggle();
+        }
+    });
+
     BooleanManager leftBumper2 = new BooleanManager(new Runnable() {
         @Override
         public void run() {
@@ -161,7 +168,7 @@ public class MeccRobotPrototypingTurret extends Mechanism{
         odoSys.init(hwMap, false);
         odoSys.retract();
         capper.init(hwMap);
-
+        acquirer.flipDown();
 //        senseHub.init(hwMap);
     }
 
@@ -196,7 +203,7 @@ public class MeccRobotPrototypingTurret extends Mechanism{
      */
     public void run(Gamepad gamepad, Gamepad gamepad2){
         drive(gamepad);
-        acquirerControls(gamepad);
+        acquirerControls(gamepad,gamepad2);
         lift(gamepad);
         capperControl(gamepad2);
         turret(gamepad2);
@@ -247,8 +254,10 @@ public class MeccRobotPrototypingTurret extends Mechanism{
      * controls acquirer
      * @param gamepad
      */
-    public void acquirerControls(Gamepad gamepad){
+    public void acquirerControls(Gamepad gamepad, Gamepad gamepad2){
         acquirerRun(gamepad.right_trigger,gamepad.left_trigger);
+        lStick2.update(gamepad2.left_stick_button);
+
     }
 
     /**

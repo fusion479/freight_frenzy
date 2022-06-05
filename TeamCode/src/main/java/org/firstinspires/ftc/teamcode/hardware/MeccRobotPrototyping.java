@@ -192,7 +192,7 @@ public class MeccRobotPrototyping extends Mechanism{
             //scoringV2.update();
             telemetry.update();
         }
-
+        telemetry.addData("hasfreight",blockSense.hasFreight());
     }
 
     /**

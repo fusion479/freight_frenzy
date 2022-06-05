@@ -63,13 +63,16 @@ public class SCORINGFSMTurretMode extends Mechanism {
                 scoreStates = states.readyArm;
                 break;
             case score:
+                timer.reset();
                 arm.dump();
                 scoreStates = states.downPrep;
                 break;
             case downPrep:
-                timer.reset();
-                turret.middle();
-                scoreStates = states.down;
+                if(timer.milliseconds() >= 450){
+                    timer.reset();
+                    turret.middle();
+                    scoreStates = states.down;
+                }
                 break;
 
             case readyArm:

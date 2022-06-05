@@ -10,7 +10,7 @@ public class  Acquirer extends Mechanism {
     private DcMotor acquirerM;
 
     public static double flipUpStart = 0.8;
-    public static double flipUpEnd = 0.35;
+    public static double flipUpEnd = 0.4;
     private ServoManager pullUpServo = new ServoManager("flipUp",flipUpStart,flipUpEnd);
 
     //tune numbers as desired

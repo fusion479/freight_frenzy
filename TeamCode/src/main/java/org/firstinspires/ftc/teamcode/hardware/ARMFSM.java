@@ -33,7 +33,7 @@ public class ARMFSM extends Mechanism{
         switch(armStates) {
             case down:
                 if(timer.milliseconds() >= 350) {
-                    if(sensor.hasFreight() && timer.milliseconds() >= 550) {
+                    if(sensor.hasFreight() && timer.milliseconds() >= 1000) {
                         arm.tuckPos();
                         arm.readyPos();
                     }else {

@@ -20,7 +20,7 @@ public class ScoringArm extends ServoMechanism{
     public static double LIMIT_L_START = 1;
     public static double LIMIT_L_END = 0;
 
-    public static double LIMIT_R_START = 0.03;
+    public static double LIMIT_R_START = 0.0;
     public static double LIMIT_R_END = 1;
 
     ////////////DEPO SERVO LIMITS
@@ -50,10 +50,9 @@ public class ScoringArm extends ServoMechanism{
 
     public static double armDuckPos = 0.8;
     /////DEPO SERVO POSITIONS
-    public static double depoStartPos = 0.28;//0.8; //init position of depo
-    public static double depoEndPos = 1.0; //far end position of depo
-    public static double depoTuckPos= 0.35;//1.0; //tuck position for movement while going upwards
-    public static double depoDumpPos_Hard = 0.24; //0.2; //position to go to for dump movement HARD
+    public static double depoStartPos = 0.3;//0.8; //init position of depo
+    public static double depoTuckPos= 0.5;//1.0; //tuck position for movement while going upwards
+    public static double depoDumpPos_Hard = 0.0; //0.2; //position to go to for dump movement HARD
     public static double depoDumpPos_Soft = 0.5; //position to go to for dump movement SOFT
 
     public static double depoLowGoalPos = depoStartPos; //position to go to for lowGoal prep
