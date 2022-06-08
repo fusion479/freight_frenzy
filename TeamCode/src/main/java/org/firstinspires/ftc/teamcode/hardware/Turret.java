@@ -13,7 +13,7 @@ public class Turret extends Mechanism{
 
 
     public Side side = Side.MIDDLE;
-    public Side defaultSide = Side.LEFT;
+    public Side defaultSide = Side.MIDDLE;
     public static double armEnd = 1.0;
     public static double armStart = 0.2;
 
