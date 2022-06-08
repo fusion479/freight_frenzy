@@ -41,8 +41,8 @@ public class ScoringArm extends ServoMechanism{
     private ServoManager head = new ServoManager("turret", LIMIT_TURRET_START, LIMIT_TURRET_END);
     /////ARM SERVO POSITIONS
     //Constants are fucked and thrown around
-    public static double armStartPos = 0.8;//0.07; //homed position
-    public static double armEndPos = 0.0; //goes to... end?
+    public static double armStartPos = 0.875;//0.07; //homed position
+    public static double armEndPos = 0.125; //goes to... end?
     public static double armLowGoalPos = 0.7; //goes to... far end for low goal?
     public static double armMidPos = 0.5; //goes to... the middle that's not the middle?
     public static double armReadyPosAuton = 0.1; //.35 old
@@ -50,9 +50,9 @@ public class ScoringArm extends ServoMechanism{
 
     public static double armDuckPos = 0.8;
     /////DEPO SERVO POSITIONS
-    public static double depoStartPos = 0.35;//0.8; //init position of depo
+    public static double depoStartPos = 0.45;//0.8; //init position of depo
     public static double depoTuckPos= 0.23;//1.0; //tuck position for movement while going upwards
-    public static double depoDumpPos_Hard = 0.5; //0.2; //position to go to for dump movement HARD
+    public static double depoDumpPos_Hard = 0.75; //0.2; //position to go to for dump movement HARD
     public static double depoDumpPos_Soft = 0.5; //position to go to for dump movement SOFT
 
     public static double depoLowGoalPos = depoStartPos; //position to go to for lowGoal prep
