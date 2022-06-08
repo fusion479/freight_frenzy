@@ -13,6 +13,7 @@ public class SCORINGFSMTurretMode extends Mechanism {
     ElapsedTime timer = new ElapsedTime();
     FreightSensor sensor = new FreightSensor();
     public static double turretMove = 1250;
+    public static double liftTimer = 200;
     public enum states {
         down,
         readyH,
@@ -39,7 +40,7 @@ public class SCORINGFSMTurretMode extends Mechanism {
     public void loop() {
         switch(scoreStates) {
             case down:
-                if(timer.milliseconds() >= 450) {
+                if(timer.milliseconds() >= liftTimer) {
                     lift.goLow();
                     arm.down();
                 }
@@ -68,7 +69,7 @@ public class SCORINGFSMTurretMode extends Mechanism {
                 scoreStates = states.downPrep;
                 break;
             case downPrep:
-                if(timer.milliseconds() >= 450){
+                if(timer.milliseconds() >= liftTimer){
                     timer.reset();
                     turret.middle();
                     scoreStates = states.down;

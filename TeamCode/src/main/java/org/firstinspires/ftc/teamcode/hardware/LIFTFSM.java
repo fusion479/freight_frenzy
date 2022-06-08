@@ -10,7 +10,7 @@ public class LIFTFSM extends Mechanism{
     private Telemetry telemetry;
 
     public static int counter = 0;
-
+    public static int retMod = 2;
     public Lift lift = new Lift();
     public enum states {
         low,
@@ -32,7 +32,7 @@ public class LIFTFSM extends Mechanism{
     public void loop() {
         switch(liftState) {
             case low:
-                if(lift.getCurrentPosition() >= lift.midPos + 2) {
+                if(lift.getCurrentPosition() >= lift.midPos + retMod) {
                     lift.retracting(true);
                 }else {
                     lift.retracting(false);
