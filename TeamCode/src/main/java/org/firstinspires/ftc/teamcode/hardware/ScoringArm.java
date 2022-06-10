@@ -24,8 +24,8 @@ public class ScoringArm extends ServoMechanism{
     public static double LIMIT_R_END = 1;
 
     ////////////DEPO SERVO LIMITS
-    public static double LIMIT_DEPO_START = 0.0;
-    public static double LIMIT_DEPO_END = 1.0;
+    public static double LIMIT_KICK_START = 0.0;
+    public static double LIMIT_KICK_END = 1.0;
 
     ////////////TURRET SERVO LIMIT
     public static double LIMIT_TURRET_START = 0.0;
@@ -36,26 +36,26 @@ public class ScoringArm extends ServoMechanism{
             "armServoL", LIMIT_L_START, LIMIT_L_END
             );
 
-    private ServoManager kicker = new ServoManager("deposit",LIMIT_DEPO_START,LIMIT_DEPO_END);
+    private ServoManager kicker = new ServoManager("deposit", LIMIT_KICK_START, LIMIT_KICK_END);
 
     private ServoManager head = new ServoManager("turret", LIMIT_TURRET_START, LIMIT_TURRET_END);
     /////ARM SERVO POSITIONS
     //Constants are fucked and thrown around
-    public static double armStartPos = 0.0;//0.07; //homed position
-    public static double armEndPos = 0.7; //goes to... end?
+    public static double armStartPos = 0.85;//0.07; //homed position
+    public static double armEndPos = 0.125; //goes to... end?
     public static double armLowGoalPos = 0.7; //goes to... far end for low goal?
-    public static double armMidPos = 0.7; //goes to... the middle that's not the middle?
+    public static double armMidPos = 0.6; //goes to... the middle that's not the middle?
     public static double armReadyPosAuton = 0.1; //.35 old
     public static double armReadyPosTeleop = 0.35; //.35 old
 
     public static double armDuckPos = 0.8;
     /////DEPO SERVO POSITIONS
-    public static double depoStartPos = 0.3;//0.8; //init position of depo
-    public static double depoTuckPos= 0.5;//1.0; //tuck position for movement while going upwards
-    public static double depoDumpPos_Hard = 0.0; //0.2; //position to go to for dump movement HARD
-    public static double depoDumpPos_Soft = 0.5; //position to go to for dump movement SOFT
+    public static double kickStartPos = 0.4;//0.45;//0.8; //init position of depo
+    public static double kickTuckPos = 0.7;//0.23;//1.0; //tuck position for movement while going upwards
+    public static double kickDumpPos_Hard = 0.3;//0.75; //0.2; //position to go to for dump movement HARD
+    public static double kickDumpPos_Soft = 0.5; //position to go to for dump movement SOFT
 
-    public static double depoLowGoalPos = depoStartPos; //position to go to for lowGoal prep
+    public static double kickLowGoalPos = kickStartPos; //position to go to for lowGoal prep
     public static double depoCapStonePos = 0.9; //position to go to for capStone prep
     /////TURRET SERVO POSITIONS
     public static double headIdlePos = 0.5;
@@ -116,7 +116,7 @@ public class ScoringArm extends ServoMechanism{
      * tucks for lowgoal scoring
      */
     public void lowGoalTuck(){
-        kicker.setPosRatio(depoLowGoalPos);
+        kicker.setPosRatio(kickLowGoalPos);
     }
 
     /**
@@ -147,18 +147,18 @@ public class ScoringArm extends ServoMechanism{
      * sets depo to tuck pos
      */
     public void tuckPos(){
-        kicker.setPosRatio(depoTuckPos);
+        kicker.setPosRatio(kickTuckPos);
     }
 
     /**
      * dumps freight
      */
     public void dumpHard() {
-        kicker.setPosRatio(depoDumpPos_Hard);
+        kicker.setPosRatio(kickDumpPos_Hard);
         Runnable run = new Runnable() {
             @Override
             public void run() {
-                kicker.setPosRatio(depoStartPos);
+                kicker.setPosRatio(kickStartPos);
             }
 
         };
@@ -167,14 +167,14 @@ public class ScoringArm extends ServoMechanism{
     }
 
     public void dumpPos(){
-        kicker.setPosRatio(depoDumpPos_Hard);
+        kicker.setPosRatio(kickDumpPos_Hard);
     }
     public void dumpSoft() {
-        kicker.setPosRatio(depoDumpPos_Soft);
+        kicker.setPosRatio(kickDumpPos_Soft);
         Runnable run = new Runnable() {
             @Override
             public void run() {
-                kicker.setPosRatio(depoStartPos);
+                kicker.setPosRatio(kickStartPos);
             }
 
         };
@@ -183,12 +183,12 @@ public class ScoringArm extends ServoMechanism{
     }
 
     public void dumpDuck(){
-        kicker.setPosRatio(depoDumpPos_Soft);
+        kicker.setPosRatio(kickDumpPos_Soft);
         pivotArm.goTo(armDuckPos);
         Runnable run = new Runnable() {
             @Override
             public void run() {
-                kicker.setPosRatio(depoStartPos);
+                kicker.setPosRatio(kickStartPos);
             }
 
         };
@@ -198,7 +198,7 @@ public class ScoringArm extends ServoMechanism{
      * resets depo position
      */
     public void depositReset() {
-        kicker.setPosRatio(depoStartPos);
+        kicker.setPosRatio(kickStartPos);
     }
 
     public void readyPos(){
@@ -219,7 +219,7 @@ public class ScoringArm extends ServoMechanism{
     @Deprecated
     public void tuck(){
         pivotArm.goTo(armMidPos);
-        kicker.setPosRatio(depoTuckPos);
+        kicker.setPosRatio(kickTuckPos);
         homed = false;
     }
 

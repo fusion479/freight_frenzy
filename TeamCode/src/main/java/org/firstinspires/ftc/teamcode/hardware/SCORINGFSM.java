@@ -1,15 +1,17 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
+@Config
 public class SCORINGFSM extends Mechanism {
     public LIFTFSM lift = new LIFTFSM();
     public ARMFSM arm = new ARMFSM();
     ElapsedTime timer = new ElapsedTime();
     FreightSensor sensor = new FreightSensor();
+    public static int liftTimer = 450;
     public enum states {
         down,
         readyH,
@@ -33,7 +35,7 @@ public class SCORINGFSM extends Mechanism {
     public void loop() {
         switch(scoreStates) {
             case down:
-                if(timer.milliseconds() >= 450) {
+                if(timer.milliseconds() >= liftTimer) {
                     lift.goLow();
                     arm.down();
                 }
@@ -91,6 +93,17 @@ public class SCORINGFSM extends Mechanism {
             lowGoal();
         }else{
             down();
+        }
+    }
+    public void setGoal(int goal) {
+        if(goal == 0) {
+            highGoal();
+        }
+        if(goal == 1) {
+            midGoal();
+        }
+        if(goal == 3) {
+            lowGoal();
         }
     }
 }

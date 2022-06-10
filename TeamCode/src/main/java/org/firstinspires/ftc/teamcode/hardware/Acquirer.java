@@ -14,7 +14,7 @@ public class  Acquirer extends Mechanism {
     private ServoManager pullUpServo = new ServoManager("flipUp",flipUpStart,flipUpEnd);
 
     //tune numbers as desired
-    public static double outake = 0.5;
+    public static double outake = 0.8;
     public static double intake = 1.0;
     //Goal in init is to just initialize the motors
 
