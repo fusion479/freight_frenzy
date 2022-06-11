@@ -56,7 +56,7 @@ public class ScoringArmTest extends LinearOpMode {
             }
 
             else if(gamepad1.x){
-                scoringArm.goToLowGoal();
+                scoringArm.goToEnd();
             }
 
             if(gamepad1.left_bumper){

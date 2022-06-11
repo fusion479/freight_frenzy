@@ -54,7 +54,6 @@ public class ScoringArm extends ServoMechanism{
     public static double kickTuckPos = 0.7;//0.23;//1.0; //tuck position for movement while going upwards
     public static double kickDumpPos_Hard = 0.3;//0.75; //0.2; //position to go to for dump movement HARD
     public static double kickDumpPos_Soft = 0.5; //position to go to for dump movement SOFT
-
     public static double kickLowGoalPos = kickStartPos; //position to go to for lowGoal prep
     public static double depoCapStonePos = 0.9; //position to go to for capStone prep
     /////TURRET SERVO POSITIONS
