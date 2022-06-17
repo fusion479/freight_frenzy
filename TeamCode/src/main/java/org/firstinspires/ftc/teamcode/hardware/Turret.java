@@ -57,8 +57,11 @@ public class Turret extends Mechanism{
         if(defaultSide == Side.LEFT){
             left();
         }
-        else if(defaultSide == Side.RIGHT){
+        if(defaultSide == Side.RIGHT){
             right();
+        }
+        if(defaultSide == Side.MIDDLE) {
+            middle();
         }
     }
 

@@ -30,6 +30,7 @@ import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigu
 import org.firstinspires.ftc.teamcode.hardware.Acquirer;
 import org.firstinspires.ftc.teamcode.hardware.FreightSensor;
 import org.firstinspires.ftc.teamcode.hardware.LiftScoringV2;
+import org.firstinspires.ftc.teamcode.hardware.TURRETFSM;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
@@ -90,6 +91,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     private BNO055IMU imu;
     private VoltageSensor batteryVoltageSensor;
     private LiftScoringV2 scoringMech;
+    private TURRETFSM scoring;
     private FreightSensor sensor;
     private Acquirer acquirer;
     public boolean acquirerRuns = false;
@@ -104,8 +106,6 @@ public class SampleMecanumDrive extends MecanumDrive {
     }
     public SampleMecanumDrive(HardwareMap hardwareMap, double tW, double kv, double ka, double kS, double hP) {
         super(kv, ka, kS, tW, tW, LATERAL_MULTIPLIER);
-        TRANSLATIONAL_PID = new PIDCoefficients(transkP, transkI, transkD);
-        HEADING_PID = new PIDCoefficients(hP, 0, 0);
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
                 new Pose2d(0.5, 0.5, Math.toRadians(1.0)), 0.09);
 
@@ -247,19 +247,14 @@ public class SampleMecanumDrive extends MecanumDrive {
         DriveSignal signal = trajectorySequenceRunner.update(getPoseEstimate(), getPoseVelocity());
 
         if (signal != null) setDriveSignal(signal);
-        if(scoringMech != null){
-            scoringMech.update();
+        if(scoring != null){
+            scoring.loop();
         }
         if(acquirer != null) {
 
             if(sensor != null){
                 boolean outaking = (acquirerRuns && sensor.hasFreight()) || (acquirerReverse && acquirerRuns);
                 boolean intaking = acquirerRuns;
-
-                if(intaking && scoringMech.raisingStatus()){
-                    outaking = true;
-                    intaking = false;
-                }
                 acquirer.run(outaking,intaking);
             }
         }
@@ -373,8 +368,8 @@ public class SampleMecanumDrive extends MecanumDrive {
         return new ProfileAccelerationConstraint(maxAccel);
     }
 
-    public void setSlides(LiftScoringV2 scoringMech){
-        this.scoringMech = scoringMech;
+    public void setSlides(TURRETFSM turret){
+        scoring = turret;
 
     }
 

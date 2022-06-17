@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.hardware.CapVision;
 import org.firstinspires.ftc.teamcode.hardware.Carousel;
 import org.firstinspires.ftc.teamcode.hardware.RetractableOdoSys;
+import org.firstinspires.ftc.teamcode.hardware.TURRETFSM;
 import org.firstinspires.ftc.teamcode.hardware.util.DelayCommand;
 import org.firstinspires.ftc.teamcode.hardware.FreightSensor;
 import org.firstinspires.ftc.teamcode.hardware.LiftScoringV2;
@@ -25,7 +26,7 @@ public class RedDucks extends LinearOpMode {
     private Carousel carousel = new Carousel();
     private DelayCommand delay = new DelayCommand();
     private FreightSensor sensor = new FreightSensor();
-    private LiftScoringV2 scoringMech= new LiftScoringV2();
+    private TURRETFSM scoringMech= new TURRETFSM();
     private RetractableOdoSys odoSys = new RetractableOdoSys();
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -64,7 +65,7 @@ public class RedDucks extends LinearOpMode {
         carousel.init(hardwareMap);
         sensor.init(hardwareMap);
 
-        scoringMech.init(hardwareMap, sensor);
+        scoringMech.init(hardwareMap);
         cv.init(hardwareMap);
         odoSys.init(hardwareMap, true);
 
@@ -84,9 +85,9 @@ public class RedDucks extends LinearOpMode {
                 .setReversed(true)
                 .splineTo(new Vector2d(parkX, -parkY), Math.toRadians(90))
                 .splineTo(scoreHubPosR, Math.toRadians(0))
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    scoringMech.releaseHard();
-                })
+//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+//                    scoringMech.releaseHard();
+//                })
                 .waitSeconds(1)
                 // slides
                 .setReversed(false)
@@ -145,8 +146,8 @@ public class RedDucks extends LinearOpMode {
         telemetry.addData("goal: ",goal);
         telemetry.addData("region", cv.whichRegion());
         telemetry.update();
-
-        scoringMech.toggle(goal);
+//
+//        scoringMech.toggle(goal);
         drive.followTrajectorySequence(duckyPath);
         ElapsedTime timer = new ElapsedTime();
         while(timer.seconds() <= 7) {

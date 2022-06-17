@@ -37,7 +37,9 @@ public class SCORINGFSM extends Mechanism {
             case down:
                 if(timer.milliseconds() >= liftTimer) {
                     lift.goLow();
-                    arm.down();
+                    if (timer.milliseconds() >= liftTimer + 100){
+                        arm.down();
+                    }
                 }
                 break;
             case readyH:

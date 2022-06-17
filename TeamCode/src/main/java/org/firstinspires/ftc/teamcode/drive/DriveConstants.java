@@ -57,7 +57,7 @@ public class DriveConstants {
      * empirically tuned.
      */
     //non cycles K VALUES
-    public static double kV = 0.0122;
+    public static double kV = 0.011;
     public static double kA = 0.00305;
     public static double kStatic = 0.0881;
 

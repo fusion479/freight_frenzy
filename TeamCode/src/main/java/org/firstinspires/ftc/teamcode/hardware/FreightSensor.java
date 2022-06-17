@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import java.lang.Math;
 
 @Config
-public class FreightSensor extends Mechanism{
+public class  FreightSensor extends Mechanism{
     // Adaptar class for color sensor that detects freight
 
     //ranges
@@ -49,7 +49,7 @@ public class FreightSensor extends Mechanism{
         //return ((color.red() + color.green()) / 2 > color.blue() && (color.red()+color.green()) / 2 >= 100); //idk how this works mannn
         return  (greenEstimate() + blueEstimate() + redEstimate()) / 3 > 100;
     }
-
+    public boolean zsense() {return hasBlock() || hasBall();}
     /**
      *
      * @return returns the status of detected freight
@@ -111,6 +111,9 @@ public class FreightSensor extends Mechanism{
     }
 
     public boolean hasBall() {
-    	return Math.round((this.red()/this.blue())) == 1 && Math.round(this.red()/this.green()) == 1 && Math.round(this.blue()/this.green()) == 1;
+        double a = Math.round((this.red() / this.blue()));
+        double b = Math.round(this.red() / this.green());
+        double c = Math.round(this.blue() / this.green());
+        return a == b && b == c;
     }
 }

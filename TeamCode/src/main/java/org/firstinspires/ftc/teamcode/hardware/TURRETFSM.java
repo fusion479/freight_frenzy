@@ -9,7 +9,7 @@ public class TURRETFSM extends Mechanism{
     public SCORINGFSM score = new SCORINGFSM();
     public Turret turret = new Turret();
     int goal = 0;
-    public static double turtime = 1000;
+    public static double turtime = 800;
     public static double predrop = 100;
     public enum states {
         ready,
@@ -28,18 +28,22 @@ public class TURRETFSM extends Mechanism{
             case ready:
                 score.setGoal(goal);
                 if(timer.milliseconds() >= turtime) {
-                    turret.left();
+                    turret.defaultSide();
                 }
                 break;
             case score:
                 score.score();
                 timer.reset();
+                setDirMiddle();
                 s = states.downing;
             case downing:
                 if(timer.milliseconds() >= predrop) {
-                    score.down();
                     turret.middle();
-                    timer.reset();
+                    setDirMiddle();
+                    if(timer.milliseconds() >= 2*predrop) {
+                        score.down();
+                        timer.reset();
+                    }
                 }
                 break;
         }
@@ -49,7 +53,7 @@ public class TURRETFSM extends Mechanism{
         s = states.downing;
     }
     public void toggleHigh() {
-        if (s == states.ready) {
+        if (s == states.ready && goal == 0) {
             down();
         }else {
             s = states.ready;
@@ -57,7 +61,7 @@ public class TURRETFSM extends Mechanism{
         }
     }
     public void toggleLow() {
-        if (s == states.ready) {
+        if (s == states.ready && goal == 3) {
             down();
         }else {
             s = states.ready;
@@ -65,7 +69,7 @@ public class TURRETFSM extends Mechanism{
         }
     }
     public void toggleMid() {
-        if (s == states.ready) {
+        if (s == states.ready && goal == 1) {
             down();
         }else {
             s = states.ready;
@@ -76,6 +80,15 @@ public class TURRETFSM extends Mechanism{
         if(s == states.ready) {
             s = states.score;
         }
+    }
+    public void setDirRight() {
+        turret.setDefaultSide(Turret.Side.RIGHT);
+    }
+    public void setDirLeft() {
+        turret.setDefaultSide(Turret.Side.LEFT);
+    }
+    public void setDirMiddle() {
+        turret.setDefaultSide(Turret.Side.MIDDLE);
     }
     public void high() {s = states.ready; goal = 0;}
     public void low() {s = states.ready; goal = 3;}
