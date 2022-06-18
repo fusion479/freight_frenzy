@@ -65,8 +65,8 @@ public class SampleMecanumDrive extends MecanumDrive {
     public static double transkP = 0;
     public static double transkI = 0;
     public static double transkD = 0;
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6, 0.5, 0.25);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(4, 0.5, 0.5);
 
 
     //old value
@@ -248,15 +248,15 @@ public class SampleMecanumDrive extends MecanumDrive {
 
         if (signal != null) setDriveSignal(signal);
         if(scoring != null){
-            scoring.loop();
+           scoring.loop();
         }
         if(acquirer != null) {
 
-            if(sensor != null){
-                boolean outaking = (acquirerRuns && sensor.hasFreight()) || (acquirerReverse && acquirerRuns);
-                boolean intaking = acquirerRuns;
-                acquirer.run(outaking,intaking);
-            }
+//            if(sensor != null){
+//                boolean outaking = (acquirerRuns && sensor.hasFreight()) || (acquirerReverse && acquirerRuns);
+//                boolean intaking = acquirerRuns;
+//                acquirer.run(outaking,intaking);
+//            }
         }
     }
 

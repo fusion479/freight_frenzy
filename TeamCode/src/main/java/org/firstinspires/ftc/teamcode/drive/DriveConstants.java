@@ -47,7 +47,7 @@ public class DriveConstants {
     public static double GEAR_RATIO = 24.0/18.0; // output (wheel) speed / input (motor) speed
 
     //OLD VALUE
-    public static double TRACK_WIDTH = 7.5; // in
+    public static double TRACK_WIDTH = 10; // in
     //idfk, old track width 11.3, new one mad sussy but works
     //cycles track widthpublic static double TRACK_WIDTH = 10.55;
     /*

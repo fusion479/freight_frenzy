@@ -11,6 +11,7 @@ public class ARMFSM extends Mechanism{
     private ElapsedTime timer = new ElapsedTime();
     private FreightSensor sensor = new FreightSensor();
     private Telemetry telemetry;
+    private double kickTime = 1000;
     public enum states {
         down,
         up,
@@ -33,7 +34,7 @@ public class ARMFSM extends Mechanism{
         switch(armStates) {
             case down:
                 if(timer.milliseconds() >= 350) {
-                    if(sensor.hasFreight() && timer.milliseconds() >= 1000) {
+                    if(sensor.hasFreight() && timer.milliseconds() >= kickTime) {
                         arm.tuckPos();
                         arm.readyPos();
                     }else {
