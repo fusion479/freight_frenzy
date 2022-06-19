@@ -10,7 +10,7 @@ public class TURRETFSM extends Mechanism{
     public Turret turret = new Turret();
     int goal = 0;
     public static double turtime = 800;
-    public static double predrop = 100;
+    public static double predrop = 200;
     public enum states {
         ready,
         score,
