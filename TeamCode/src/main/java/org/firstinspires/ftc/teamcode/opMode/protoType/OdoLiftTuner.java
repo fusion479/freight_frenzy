@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
-@TeleOp(name = "ServoTest", group = "prototype")
+@TeleOp(name = "OdoLiftTuner", group = "prototype")
 public class OdoLiftTuner extends LinearOpMode {
     private Servo testServoLeft;
     private Servo testServoRight;
