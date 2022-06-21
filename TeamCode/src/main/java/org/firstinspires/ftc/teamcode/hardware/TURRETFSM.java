@@ -53,14 +53,6 @@ public class TURRETFSM extends Mechanism{
         s = states.downing;
     }
     public void toggleHigh() {
-        if (s == states.ready && goal == 0) {
-            down();
-        }else {
-            s = states.ready;
-            goal = 0;
-        }
-    }
-    public void toggleLow() {
         if (s == states.ready && goal == 3) {
             down();
         }else {
@@ -68,7 +60,7 @@ public class TURRETFSM extends Mechanism{
             goal = 3;
         }
     }
-    public void toggleMid() {
+    public void toggleLow() {
         if (s == states.ready && goal == 1) {
             down();
         }else {
@@ -76,10 +68,29 @@ public class TURRETFSM extends Mechanism{
             goal = 1;
         }
     }
+    public void toggleMid() {
+        if (s == states.ready && goal == 2) {
+            down();
+        }else {
+            s = states.ready;
+            goal = 2;
+        }
+    }
+    public void toggleGoal(int target) {
+        if( s == states.ready && goal == target) {
+            down();
+        }else {
+            s = states.ready;
+            goal = target;
+        }
+    }
     public void score() {
         if(s == states.ready) {
             s = states.score;
         }
+    }
+    public void ready() {
+        s = states.ready;
     }
     public void setDirRight() {
         turret.setDefaultSide(Turret.Side.RIGHT);

@@ -260,15 +260,8 @@ public class RedCycles extends LinearOpMode {
                 .build();
 
         waitForStart();
-        if (cv.whichRegion() == 1) {
-            goal = "lowgoal";
-        }
-        if (cv.whichRegion() == 2) {
-            goal = "midgoal";
-        }
-        if (cv.whichRegion() == 3) {
-            goal = "highgoal";
-        }
+        scoringMech.score.setGoal(cv.whichRegion());
+        scoringMech.s = TURRETFSM.states.ready;
         telemetry.addData("goal: ", goal);
         telemetry.addData("region", cv.whichRegion());
 //        scoringMech.toggle(goal);

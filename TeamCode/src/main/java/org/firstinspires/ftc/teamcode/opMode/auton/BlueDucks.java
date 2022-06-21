@@ -47,11 +47,12 @@ public class BlueDucks extends LinearOpMode {
     public static double carouselPosy = 62;
     public static double carouselPosAng = Math.toRadians(180);
 
-    public static double parkX = -60;
-    public static double parkY = 44;
+    public static double parkX = -63;
+    public static double parkY = 42;
     public static double parkAng = Math.toRadians(180);
 
     public static String goal = "highgoal";
+    public static int theGoal;
 
     Pose2d startPosB = new Pose2d(startx, starty, startAng);
     Vector2d scoreHubPosB = new Vector2d(scoreHubPosx, scoreHubPosy);
@@ -84,23 +85,7 @@ public class BlueDucks extends LinearOpMode {
         drive.setPoseEstimate(startPos);
 
         //trajectory
-        TrajectorySequence duckyPath = drive.trajectorySequenceBuilder(startPos)
-                .waitSeconds(1)
-                .setReversed(true)
-                .splineTo(new Vector2d(parkX, parkY),Math.toRadians(270))
-                .splineTo(scoreHubPosB, Math.toRadians(0))
-//                .UNSTABLE_addTemporalMarkerOffset(0,()->{
-//                    scoringMech.releaseHard();
-//                })
-                .waitSeconds(1)
-                //slides
-                .setReversed(false)
-                .splineTo(new Vector2d(parkX, parkY), Math.toRadians(90))
-                .lineToSplineHeading(carouselPosB)
-                .UNSTABLE_addTemporalMarkerOffset(0,()->{
-                    carousel.run(true,false);
-                })
-                .build();
+
         TrajectorySequence parka = drive.trajectorySequenceBuilder(carouselPosB)
                 .UNSTABLE_addTemporalMarkerOffset(0,()->{
                     carousel.run(false,false);
@@ -137,15 +122,28 @@ public class BlueDucks extends LinearOpMode {
             telemetry.update();
         }
         waitForStart();
-        if(cv.whichRegion() == 1) {
-            goal = "lowgoal";
-        }
-        if(cv.whichRegion() == 2) {
-            goal = "midgoal";
-        }
-        if(cv.whichRegion() == 3) {
-            goal = "highgoal";
-        }
+        theGoal = cv.whichRegion();
+        TrajectorySequence duckyPath = drive.trajectorySequenceBuilder(startPos)
+                .waitSeconds(1)
+                .setReversed(true)
+                .splineTo(new Vector2d(parkX, scoreHubPosy),Math.toRadians(270))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    scoringMech.toggleGoal(theGoal);
+                })
+                .lineToLinearHeading(new Pose2d(scoreHubPosB), Math.toRadians(180))
+                .waitSeconds(0.1)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    scoringMech.score();
+                })
+                .waitSeconds(1)
+                //slides
+                .setReversed(false)
+                .splineTo(new Vector2d(parkX, parkY), Math.toRadians(90))
+                .lineToSplineHeading(carouselPosB)
+                .UNSTABLE_addTemporalMarkerOffset(0,()->{
+                    carousel.run(true,false);
+                })
+                .build();
         telemetry.addData("goal: ",goal);
         telemetry.addData("region", cv.whichRegion());
         telemetry.update();
@@ -153,8 +151,8 @@ public class BlueDucks extends LinearOpMode {
         //scoringMech.toggle(goal);
         drive.followTrajectorySequence(duckyPath);
         ElapsedTime timer = new ElapsedTime();
-        while(timer.seconds() <= 7) {
-            if(timer.seconds() <= 5) {
+        while(timer.seconds() <= 3) {
+            if(timer.seconds() <= 1.5) {
                 carousel.rrrun(timer, 1);
             }else {
                 carousel.runmax(true, false);

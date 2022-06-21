@@ -116,4 +116,7 @@ public class  FreightSensor extends Mechanism{
         double c = Math.round(this.blue() / this.green());
         return a == b && b == c;
     }
+    public boolean hasDuck() {
+        return Math.round((float)blue() / (float)green()) == 1;
+    }
 }

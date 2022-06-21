@@ -24,19 +24,12 @@ public class Carousel extends Mechanism {
     public static int phase0Timer = 1000;
     public static int phase1Timer = 1100;
 
-    public static double coastingValue = 0.0;
-    public static double coastingDefinition = 0.0;
-
-    public static double timeRun = 1.0;
-    public static double rate = 0.1;
-    public static double refreshRate = 0.1;
-    public static double currentPower = 0;
 
     private DelayCommand delay = new DelayCommand();
 
     public static double maxV = 1;
     public static double maxA = 0.1;
-    public static double startV = 0.35;
+    public static double startV = 0.5;
     public static double startA = 0;
 
     MotionProfile profile = MotionProfileGenerator.generateSimpleMotionProfile(

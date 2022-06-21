@@ -28,6 +28,7 @@ public class RedDucks extends LinearOpMode {
     private FreightSensor sensor = new FreightSensor();
     private TURRETFSM scoringMech= new TURRETFSM();
     private RetractableOdoSys odoSys = new RetractableOdoSys();
+    public int theGoal;
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -43,11 +44,11 @@ public class RedDucks extends LinearOpMode {
     public static double scoreHubPosAngR = 45;
 
     public static double carouselPosx = -62;
-    public static double carouselPosy = 64;
+    public static double carouselPosy = 62;
     public static double carouselPosAng = Math.toRadians(270);
 
     public static double parkX = -63;
-    public static double parkY = 44;
+    public static double parkY = 42;
     public static double parkAng = Math.toRadians(180);
 
     public static String goal = "highgoal";
@@ -80,30 +81,7 @@ public class RedDucks extends LinearOpMode {
         drive.setPoseEstimate(startPosR);
 
         //trajectory
-        TrajectorySequence duckyPath = drive.trajectorySequenceBuilder(startPosR)
-                .waitSeconds(1)
-                .setReversed(true)
-                .splineTo(new Vector2d(parkX, -parkY), Math.toRadians(90))
-                .splineTo(scoreHubPosR, Math.toRadians(0))
-//                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                    scoringMech.releaseHard();
-//                })
-                .waitSeconds(1)
-                // slides
-                .setReversed(false)
-                .splineTo(new Vector2d(parkX, -parkY), Math.toRadians(270))
-                .lineToSplineHeading(carouselPosR)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    carousel.run(false,true);
-                })
-                .build();
-        TrajectorySequence parka = drive.trajectorySequenceBuilder(carouselPosR)
-                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-                    carousel.run(false,false);
-                })
-                .lineToSplineHeading(parkR)
 
-                .build();
 
         //3ftx3ftmovement
 
@@ -134,24 +112,45 @@ public class RedDucks extends LinearOpMode {
             telemetry.addData("Status", "Waiting in init");
             telemetry.update();
         }
-        if(cv.whichRegion() == 1) {
-            goal = "lowgoal";
-        }
-        if(cv.whichRegion() == 2) {
-            goal = "midgoal";
-        }
-        if(cv.whichRegion() == 3) {
-            goal = "highgoal";
-        }
+        theGoal = cv.whichRegion();
         telemetry.addData("goal: ",goal);
         telemetry.addData("region", cv.whichRegion());
         telemetry.update();
+        TrajectorySequence duckyPath = drive.trajectorySequenceBuilder(startPosR)
+                .waitSeconds(1)
+                .setReversed(true)
+                .splineTo(new Vector2d(parkX, -scoreHubPosy), Math.toRadians(90))
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    scoringMech.toggleGoal(theGoal);
+                })
+                .lineToLinearHeading(new Pose2d(scoreHubPosR, Math.toRadians(180)))
+                .waitSeconds(0.1)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    scoringMech.score();
+                })
+                .waitSeconds(1)
+                // slides
+                .setReversed(false)
+                .splineTo(new Vector2d(parkX, -parkY), Math.toRadians(270))
+                .lineToSplineHeading(carouselPosR)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    carousel.run(false,true);
+                })
+                .build();
+        TrajectorySequence parka = drive.trajectorySequenceBuilder(carouselPosR)
+                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
+                    carousel.run(false,false);
+                })
+                .lineToSplineHeading(parkR)
+
+                .build();
+
 //
 //        scoringMech.toggle(goal);
         drive.followTrajectorySequence(duckyPath);
         ElapsedTime timer = new ElapsedTime();
-        while(timer.seconds() <= 7) {
-            if(timer.seconds() <= 5) {
+        while(timer.seconds() <= 3) {
+            if(timer.seconds() <= 1.5) {
                 carousel.rrrun(timer, -1);
             }else {
                 carousel.runmax(false, true);

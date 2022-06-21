@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.hardware.util.BooleanManager;
 @Config
 public class MeccRobotProtoZ extends Mechanism{
     private boolean debug = true;
-    public static double carotime = 1.5;
+    public static double carotime = 1;
     //Mechanisms Utilized
     private SampleMecanumDrive drive;
     int left_stick_inverted =  1;

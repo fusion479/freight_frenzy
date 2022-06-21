@@ -98,13 +98,13 @@ public class SCORINGFSM extends Mechanism {
         }
     }
     public void setGoal(int goal) {
-        if(goal == 0) {
+        if(goal == 3) {
             highGoal();
         }
-        if(goal == 1) {
+        if(goal == 2) {
             midGoal();
         }
-        if(goal == 3) {
+        if(goal == 1) {
             lowGoal();
         }
     }

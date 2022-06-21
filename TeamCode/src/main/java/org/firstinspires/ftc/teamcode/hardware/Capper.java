@@ -6,9 +6,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 @Config
 public class Capper extends ServoMechanism{
     //capper servo pos
-    public static double GRAB = .15;
-    public static double CAPPING_UP = 0.38;
-    public static double CAPPING_DOWN = 0.15;
+    public static double GRAB = .2;
+    public static double CAPPING_UP = 0.575;
+    public static double CAPPING_DOWN = 0.2;
     public static double IDLE = 1;
     public static double CAP_POS = 5.5;
 

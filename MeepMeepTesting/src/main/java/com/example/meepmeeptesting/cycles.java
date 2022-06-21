@@ -46,7 +46,7 @@ public class cycles {
 
         RoadRunnerBotEntity myBotBlue = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(50, 45, Math.toRadians(180), Math.toRadians(180), 9.85)
+                .setConstraints(55, 55, Math.toRadians(180), Math.toRadians(180), 9.85)
                 .setDimensions(11.838583, 14.4882 )
                 //.setStartPose(startPos)
                 .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(startPosB)
@@ -58,84 +58,73 @@ public class cycles {
                         })
                         //.waitSeconds(.1)
                         //.lineTo(preSpline)
-                        .setReversed(false)
-                        .splineToSplineHeading(new Pose2d(bExitX, bEnterY, Math.toRadians(0)), Math.toRadians(0))
-                        .lineToLinearHeading(new Pose2d(warehouseX-1, bEnterY))
-                        //.waitSeconds(0.1)
-                        .UNSTABLE_addTemporalMarkerOffset(1, () -> {
+                                .setReversed(false)
+                                .lineToLinearHeading(new Pose2d(startx, starty, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(warehouseX-1, bEnterY))
+                                //.waitSeconds(0.1)
+                                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
 //                            scoringMech.toggle("highgoal");
-                        })
-                        .UNSTABLE_addTemporalMarkerOffset(0.4, () -> {
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.4, () -> {
 //                            intake.outake(1.0);
-                        })
-                        .setReversed(true)
-                        .lineTo(new Vector2d(bExitX, bEnterY))
-                        .splineTo(new Vector2d(scoreHubPosx, scoreHubPosy), Math.toRadians(scoreHubPosAngB+180))
-                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                            scoringMech.releaseHard();
-//                            intake.intake(1);
-                        })
-                        //.waitSeconds(.1)
-                        //.lineTo(preSpline)
-                        .setReversed(false)
-                        .splineToSplineHeading(new Pose2d(bEnter, Math.toRadians(0)), Math.toRadians(0))
-                        .lineToLinearHeading(new Pose2d(warehouseX+1, bEnterY))
-                        //.waitSeconds(0.1)
-//                        .UNSTABLE_addTemporalMarkerOffset(1, () -> {
+                                })
+                                .setReversed(true)
+                                .lineTo(new Vector2d(bExitX, bEnterY))
+                                .splineTo(new Vector2d(scoreHubPosx, scoreHubPosy), Math.toRadians(scoreHubPosAngB+180))
+                                .setReversed(false)
+                                .lineToLinearHeading(new Pose2d(startx, starty, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(warehouseX-1, bEnterY))
+                                //.waitSeconds(0.1)
+                                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
 //                            scoringMech.toggle("highgoal");
-//                        })
-//                        .UNSTABLE_addTemporalMarkerOffset(0.4, () -> {
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.4, () -> {
 //                            intake.outake(1.0);
-//                        })
-                        .setReversed(true)
-                        .lineTo(new Vector2d(bExitX, bEnterY))
-                        .splineTo(new Vector2d(scoreHubPosx, scoreHubPosy), Math.toRadians(scoreHubPosAngB+180))
-//                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                            readjustLocale(drive);
-//                            scoringMech.releaseHard();
-//                            intake.intake(1);
-//                        })
-//                        //.lineTo(preSpline)
-                        .setReversed(false)
-                        .splineToSplineHeading(new Pose2d(bEnter, Math.toRadians(0)), Math.toRadians(0))
-                        .lineToLinearHeading(new Pose2d(warehouseX+3, bEnterY))
-                        //.waitSeconds(0.1)
-//                        .UNSTABLE_addTemporalMarkerOffset(1, () -> {
+                                })
+                                .setReversed(true)
+                                .lineTo(new Vector2d(bExitX, bEnterY))
+                                .splineTo(new Vector2d(scoreHubPosx, scoreHubPosy), Math.toRadians(scoreHubPosAngB+180))
+                                .setReversed(false)
+                                .lineToLinearHeading(new Pose2d(startx, starty, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(warehouseX-1, bEnterY))
+                                //.waitSeconds(0.1)
+                                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
 //                            scoringMech.toggle("highgoal");
-//                        })
-//                        .UNSTABLE_addTemporalMarkerOffset(0.4, () -> {
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.4, () -> {
 //                            intake.outake(1.0);
-//                        })
-                        .setReversed(true)
-                        .lineTo(new Vector2d(bExitX, bEnterY))
-                        .splineTo(new Vector2d(scoreHubPosx, scoreHubPosy+1), Math.toRadians(scoreHubPosAngB+180))
-//                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                            scoringMech.releaseHard();
-//                            intake.intake(1);
-//                        })
-                        //.lineTo(preSpline)
-                        .setReversed(false)
-                        .splineToSplineHeading(new Pose2d(bEnter, Math.toRadians(0)), Math.toRadians(0))
-                        .lineToLinearHeading(new Pose2d(warehouseX+5, bEnterY))
-                        //.waitSeconds(0.1)
-//                        .UNSTABLE_addTemporalMarkerOffset(1, () -> {
+                                })
+                                .setReversed(true)
+                                .lineTo(new Vector2d(bExitX, bEnterY))
+                                .splineTo(new Vector2d(scoreHubPosx, scoreHubPosy), Math.toRadians(scoreHubPosAngB+180))
+                                .setReversed(false)
+                                .lineToLinearHeading(new Pose2d(startx, starty, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(warehouseX-1, bEnterY))
+                                //.waitSeconds(0.1)
+                                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
 //                            scoringMech.toggle("highgoal");
-//                        })
-//                        .UNSTABLE_addTemporalMarkerOffset(0.4, () -> {
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.4, () -> {
 //                            intake.outake(1.0);
-//                        })
+                                })
+                                .setReversed(true)
+                                .lineTo(new Vector2d(bExitX, bEnterY))
+                                .splineTo(new Vector2d(scoreHubPosx, scoreHubPosy), Math.toRadians(scoreHubPosAngB+180))
+                                .setReversed(false)
+                                .lineToLinearHeading(new Pose2d(startx, starty, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(warehouseX-1, bEnterY))
+                                //.waitSeconds(0.1)
+                                .UNSTABLE_addTemporalMarkerOffset(1, () -> {
+//                            scoringMech.toggle("highgoal");
+                                })
+                                .UNSTABLE_addTemporalMarkerOffset(0.4, () -> {
+//                            intake.outake(1.0);
+                                })
+                                .setReversed(true)
+                                .lineTo(new Vector2d(bExitX, bEnterY))
+                                .splineTo(new Vector2d(scoreHubPosx, scoreHubPosy), Math.toRadians(scoreHubPosAngB+180))
 
-                        .setReversed(true)
-                        .lineTo(new Vector2d(bExitX, bEnterY))
-                        .splineTo(new Vector2d(scoreHubPosx, scoreHubPosy+1), Math.toRadians(scoreHubPosAngB+180))
-//                        .UNSTABLE_addTemporalMarkerOffset(0, () -> {
-//                            scoringMech.releaseHard();
-//                            intake.intake(1);
-//                        })
-//                        //.lineTo(preSpline)
-                        .setReversed(false)
-                        .splineToSplineHeading(new Pose2d(bEnter, Math.toRadians(0)), Math.toRadians(0))
-                        .lineToLinearHeading(new Pose2d(warehouseX+6, bEnterY))
+
                                 .build()
                 );
 

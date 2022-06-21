@@ -18,7 +18,7 @@ public class CapVision extends Mechanism {
     public static boolean preview = true;
     //pipeline
     public static String color = "yellow";
-    private kellen regions = new kellen(color);
+    private kellen regions = new kellen();
     int viewid;
 
     @Override
