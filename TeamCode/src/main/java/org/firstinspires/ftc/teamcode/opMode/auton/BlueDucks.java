@@ -16,7 +16,6 @@ import org.firstinspires.ftc.teamcode.hardware.RetractableOdoSys;
 import org.firstinspires.ftc.teamcode.hardware.TURRETFSM;
 import org.firstinspires.ftc.teamcode.hardware.util.DelayCommand;
 import org.firstinspires.ftc.teamcode.hardware.FreightSensor;
-import org.firstinspires.ftc.teamcode.hardware.LiftScoringV2;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Config
@@ -130,7 +129,7 @@ public class BlueDucks extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     scoringMech.toggleGoal(theGoal);
                 })
-                .lineToLinearHeading(new Pose2d(scoreHubPosB), Math.toRadians(180))
+                .lineToLinearHeading(new Pose2d(scoreHubPosB, Math.toRadians(180)))
                 .waitSeconds(0.1)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     scoringMech.score();

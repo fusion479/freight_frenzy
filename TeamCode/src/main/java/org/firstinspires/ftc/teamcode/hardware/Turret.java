@@ -16,6 +16,8 @@ public class Turret extends Mechanism{
     public Side defaultSide = Side.MIDDLE;
     public static double armEnd = 1.0;
     public static double armStart = 0.2;
+    public static double right = 0.5;
+    public static double left = 0.2;
 
     public static double middle = 0.32;
     ServoManager turret = new ServoManager("turret",armStart,armEnd);
@@ -34,12 +36,12 @@ public class Turret extends Mechanism{
 
 
     public void left(){
-        turret.setPosRatio(0);
+        turret.setPosRatio(left);
         side = Side.LEFT;
     }
 
     public void right(){
-        turret.setPosRatio(1);
+        turret.setPosRatio(right);
         side = Side.RIGHT;
 
     }

@@ -7,7 +7,6 @@ import org.firstinspires.ftc.teamcode.hardware.util.DelayCommand;
 
 @Config
 public class ScoringArm extends ServoMechanism{
-    DelayCommand delay = new DelayCommand();
     /****
      * WHAT TO DO HERE:
      * Figure out the DESIRED endpoints using ServoTest OpMode
@@ -27,9 +26,6 @@ public class ScoringArm extends ServoMechanism{
     public static double LIMIT_KICK_START = 0.0;
     public static double LIMIT_KICK_END = 1.0;
 
-    ////////////TURRET SERVO LIMIT
-    public static double LIMIT_TURRET_START = 0.0;
-    public static double LIMIT_TURRET_END = 1.0;
 
     private GearedServos pivotArm = new GearedServos(
             "armServoR", LIMIT_R_START, LIMIT_R_END,
@@ -38,15 +34,13 @@ public class ScoringArm extends ServoMechanism{
 
     private ServoManager kicker = new ServoManager("deposit", LIMIT_KICK_START, LIMIT_KICK_END);
 
-    private ServoManager head = new ServoManager("turret", LIMIT_TURRET_START, LIMIT_TURRET_END);
     /////ARM SERVO POSITIONS
     //Constants are fucked and thrown around
     public static double armStartPos = 0.83;//0.85;//0.07; //homed position
     public static double armEndPos = 0.125; //goes to... end?
     public static double armLowGoalPos = 0.7; //goes to... far end for low goal?
-    public static double armMidPos = 0.6; //goes to... the middle that's not the middle?
-    public static double armReadyPosAuton = 0.1; //.35 old
-    public static double armReadyPosTeleop = 0.35; //.35 old
+    public static double armMidPos = 0.5; //goes to... the middle that's not the middle?
+    public static double armReadyPosTeleop = 0.45; //.35 old
 
     public static double armDuckPos = 0.8;
     /////DEPO SERVO POSITIONS
@@ -55,14 +49,9 @@ public class ScoringArm extends ServoMechanism{
     public static double kickDumpPos_Hard = 0.75; //0.2; //position to go to for dump movement HARD
     public static double kickDumpPos_Soft = 0.5; //position to go to for dump movement SOFT
     public static double kickLowGoalPos = kickStartPos; //position to go to for lowGoal prep
-    public static double depoCapStonePos = 0.9; //position to go to for capStone prep
     /////TURRET SERVO POSITIONS
-    public static double headIdlePos = 0.5;
-    public static double headFarRight = 1;
-    public static double headFarLeft = 0;
-    public boolean auton = false;
+
     private boolean formerBoolArm;
-    private boolean formerBoolDeposit;
     private boolean homed;
 
 
@@ -134,13 +123,6 @@ public class ScoringArm extends ServoMechanism{
         homed = true;
     }
 
-    public double getPosPivotArm(){
-        return pivotArm.getPos();
-    }
-
-    public double getPosDeposit(){
-        return kicker.getPosRatio();
-    }
 
     /**
      * sets depo to tuck pos
@@ -201,26 +183,13 @@ public class ScoringArm extends ServoMechanism{
     }
 
     public void readyPos(){
-        if(auton) pivotArm.goTo(armReadyPosAuton);
-        else{
+
             pivotArm.goTo(armReadyPosTeleop);
-        }
     }
 
-    public void headIdle() {head.setPosRatio(headIdlePos);}
-    public void headRight() {head.setPosRatio(headFarRight);}
-    public void headLeft() {head.setPosRatio(headFarLeft);}
 
 
-    /** goes to tucked position
-     *
-     */
-    @Deprecated
-    public void tuck(){
-        pivotArm.goTo(armMidPos);
-        kicker.setPosRatio(kickTuckPos);
-        homed = false;
-    }
+
 
     @Deprecated
     public void run(boolean bool){
@@ -237,7 +206,5 @@ public class ScoringArm extends ServoMechanism{
         }
     }
 
-    @Deprecated
-    public boolean homed(){return homed;}
 
 }
