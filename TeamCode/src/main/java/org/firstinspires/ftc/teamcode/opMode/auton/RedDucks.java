@@ -43,7 +43,7 @@ public class RedDucks extends LinearOpMode {
     public static double scoreHubPosAngR = 45;
 
     public static double carouselPosx = -62;
-    public static double carouselPosy = 62;
+    public static double carouselPosy = 63.5;
     public static double carouselPosAng = Math.toRadians(270);
 
     public static double parkX = -63;

@@ -35,7 +35,7 @@ public class BlueCycles extends LinearOpMode {
     public static double startAng = Math.toRadians(90);
     public static double slidelay = 1;
 
-    public static double scoreHubPosx = 0;
+    public static double scoreHubPosx = -2;
     public static double scoreHubPosy = 52;
 
     public static double scoreHubPosAngB = 65;

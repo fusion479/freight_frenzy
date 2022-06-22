@@ -36,14 +36,14 @@ public class BlueDucks extends LinearOpMode {
     public static double startAng = Math.toRadians(90);
 
     public static double scoreHubPosx = -34;
-    public static double scoreHubPosy = 29;
+    public static double scoreHubPosy = 31;
 
     public static double scoreHubPosAngB = -45
             ;
     public static double scoreHubPosAngR = 25;
 
     public static double carouselPosx = -62;
-    public static double carouselPosy = 62;
+    public static double carouselPosy = 63;
     public static double carouselPosAng = Math.toRadians(180);
 
     public static double parkX = -63;

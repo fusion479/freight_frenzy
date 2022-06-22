@@ -36,7 +36,7 @@ public class RedCycles extends LinearOpMode {
     public static double startAng = Math.toRadians(270);
     public static double slidelay = 1;
 
-    public static double scoreHubPosx = 0;
+    public static double scoreHubPosx = -2;
     public static double scoreHubPosy = -52;
 
     public static double scoreHubPosAngB = -65;
@@ -46,12 +46,12 @@ public class RedCycles extends LinearOpMode {
     public static double reposistionY = 71.5;
 
     public static double preSplineY = 53.5;
-    public static double bEnterX = 30;
+    public static double bEnterX = 28;
     public static double bExitX = 30;
-    public static double bEnterY = -71;
+    public static double bEnterY = -72;
     public static double warehouseX = 51;
-    public static double bExitY = -71.5;
-    public static double inc = 0.5;
+    public static double bExitY = -72;
+    public static double inc = 1.5;
     public static double wInc = 1;
     public static Pose2d startPos = new Pose2d(startx, starty, startAng);
 
@@ -99,10 +99,10 @@ public class RedCycles extends LinearOpMode {
         drive.setPoseEstimate(startPos);
         TrajectorySequence depoPath = drive.trajectorySequenceBuilder(startPos)
                 .setReversed(true)
-                .UNSTABLE_addTemporalMarkerOffset(0.1, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(0.2, () -> {
                     scoringMech.toggleHigh();
                 })
-                .lineToLinearHeading(new Pose2d(scoreHubPosx,scoreHubPosy+2, Math.toRadians(scoreHubPosAngB)))
+                .lineToLinearHeading(new Pose2d(scoreHubPosx+3,scoreHubPosy+2, Math.toRadians(scoreHubPosAngB)))
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     scoringMech.score();
                     intake.intake(1);
@@ -200,7 +200,7 @@ public class RedCycles extends LinearOpMode {
                             intake.intake(1);
                         })
                 .setReversed(false)
-                .splineToSplineHeading(new Pose2d(bEnterX, bEnterY-3*inc, Math.toRadians(0)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(bEnterX-wInc, bEnterY-3*inc, Math.toRadians(0)), Math.toRadians(0))
                 .lineToLinearHeading(new Pose2d(warehouseX+3*wInc, bEnterY-3*inc))
                 .UNSTABLE_addTemporalMarkerOffset(slidelay, () -> {
                     scoringMech.toggleHigh();
@@ -221,7 +221,7 @@ public class RedCycles extends LinearOpMode {
                     intake.intake(1);
                 })
                 .setReversed(false)
-                .splineToSplineHeading(new Pose2d(bEnterX, bEnterY-3*inc, Math.toRadians(0)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(bEnterX-2*wInc, bEnterY-3*inc, Math.toRadians(0)), Math.toRadians(0))
                 .lineToLinearHeading(new Pose2d(warehouseX+3*wInc, bEnterY-3*inc))
 //                //.waitSeconds(0.1)
 //                .UNSTABLE_addTemporalMarkerOffset(0, () -> {
