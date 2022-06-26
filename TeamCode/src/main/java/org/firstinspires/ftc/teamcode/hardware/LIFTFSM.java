@@ -11,11 +11,13 @@ public class LIFTFSM extends Mechanism{
 
     public static int counter = 0;
     public static int retMod = 2;
+    public static double shared = 2.5;
     public Lift lift = new Lift();
     public enum states {
         low,
         mid,
         high,
+        share,
     };
     public states liftState;
     @Override
@@ -46,6 +48,8 @@ public class LIFTFSM extends Mechanism{
             case high:
                 lift.raiseHigh();
                 break;
+            case share:
+                lift.setTargetPosition(shared);
         }
         lift.update();
     }
@@ -58,6 +62,7 @@ public class LIFTFSM extends Mechanism{
     public void goLow() {
         liftState = states.low;
     }
+    public void share() {liftState = states.share;}
 
 
     private boolean estimatedEqual(double one, double two){

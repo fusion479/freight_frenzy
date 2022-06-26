@@ -32,7 +32,7 @@ public class MeccRobotProtoZ extends Mechanism{
     private Capper capper = new Capper();
     private FreightSensor blockSense = new FreightSensor();
     private RetractableOdoSys odoSys = new RetractableOdoSys();
-    private TURRETFSM scoring = new TURRETFSM();
+    public TURRETFSM scoring = new TURRETFSM();
 //
 //    private SenseHub senseHub = new SenseHub();
 
@@ -128,7 +128,7 @@ public class MeccRobotProtoZ extends Mechanism{
     BooleanManager leftBumper2 = new BooleanManager(new Runnable() {
         @Override
         public void run() {
-            scoring.toggleMid();
+            scoring.toggleShare();
         }
     });
 
@@ -152,7 +152,6 @@ public class MeccRobotProtoZ extends Mechanism{
             scoring.setDirMiddle();
         }
     });
-
     Telemetry telemetry;
 
     public void init(HardwareMap hwMap){
@@ -242,6 +241,8 @@ public class MeccRobotProtoZ extends Mechanism{
             telemetry.addData("Left_stick_y",gamepad.left_stick_y);
             telemetry.addData("Left_stick_X",gamepad.left_stick_x);
             telemetry.addData("right_stick_x",gamepad.right_stick_x);
+            telemetry.addData("turret side", scoring.turret.side);
+            telemetry.addData("scoring state", scoring.s);
         }
 
         drive.setWeightedDrivePower(controls);

@@ -11,6 +11,8 @@ public class ARMFSM extends Mechanism{
     private ElapsedTime timer = new ElapsedTime();
     private FreightSensor sensor = new FreightSensor();
     private Telemetry telemetry;
+    public boolean kOverride;
+    public boolean auton;
     private double kickTime = 1000;
     public enum states {
         down,
@@ -30,13 +32,19 @@ public class ARMFSM extends Mechanism{
         sensor.init(hwMap);
         telemetry = tele;
     }
+    public void init(HardwareMap hwMap, boolean a) {
+        init(hwMap);
+        auton = a;
+    }
     public void loop() {
         switch(armStates) {
             case down:
                 if(timer.milliseconds() >= 350) {
-                    if(sensor.hasFreight() && timer.milliseconds() >= kickTime) {
+                    if((sensor.hasFreight() && timer.milliseconds() >= kickTime) || kOverride) {
                         arm.tuckPos();
-                        arm.readyPos();
+                        if(!auton) {
+                            arm.readyPos();
+                        }
                     }else {
                         arm.depositReset();
                         arm.goToStart();

@@ -23,6 +23,10 @@ public class TURRETFSM extends Mechanism{
         score.init(hwMap);
         turret.init(hwMap);
     }
+    public void init(HardwareMap hwMap, boolean a) {
+        init(hwMap);
+        score.arm.auton = a;
+    }
     public void loop() {
         switch(s) {
             case ready:
@@ -82,6 +86,17 @@ public class TURRETFSM extends Mechanism{
         }else {
             s = states.ready;
             goal = target;
+            if(target == 0) {
+                goal = 3;
+            }
+        }
+    }
+    public void toggleShare() {
+        if (s == states.ready && goal == 4) {
+            down();
+        }else {
+            s = states.ready;
+            goal = 4;
         }
     }
     public void score() {
@@ -104,4 +119,7 @@ public class TURRETFSM extends Mechanism{
     public void high() {s = states.ready; goal = 0;}
     public void low() {s = states.ready; goal = 3;}
     public void mid() {s = states.ready; goal = 1;}
+    public void kOverToggle() {
+        score.arm.kOverride = !score.arm.kOverride;
+    }
 }

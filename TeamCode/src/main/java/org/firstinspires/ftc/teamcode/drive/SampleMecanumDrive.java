@@ -105,7 +105,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     public SampleMecanumDrive(HardwareMap hardwareMap, double tW, double kv, double ka, double kS, double hP) {
         super(kv, ka, kS, tW, tW, LATERAL_MULTIPLIER);
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
-                new Pose2d(0.5, 0.5, Math.toRadians(1.0)), 0.09);
+                new Pose2d(0.5, 0.5, Math.toRadians(1.0)), 0.2);
 
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
 

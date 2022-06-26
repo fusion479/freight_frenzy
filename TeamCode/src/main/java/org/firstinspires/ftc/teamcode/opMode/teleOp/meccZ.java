@@ -22,6 +22,8 @@ public class meccZ extends LinearOpMode {
 
         while(!opModeIsActive() && !isStopRequested()){
             telemetry.addData("Status", "Waiting in init");
+            telemetry.addData("turret side", robot.scoring.turret.side);
+            telemetry.addData("scoring state", robot.scoring.s);
             telemetry.update();
         }
         while(opModeIsActive()){
@@ -31,6 +33,8 @@ public class meccZ extends LinearOpMode {
 //            telemetry.addData("kP: ", lift.coeffs.kP);
 //              telemetry.addData("liftL: ", .liftLeft.getCurrentPosition());
 //              telemetry.addData("liftR: ", lift.liftRight.getCurrentPosition());
+            telemetry.addData("turret side", robot.scoring.turret.side);
+            telemetry.addData("scoring state", robot.scoring.s);
             telemetry.update();
         }
     }

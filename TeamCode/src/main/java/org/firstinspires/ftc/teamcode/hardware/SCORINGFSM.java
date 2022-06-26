@@ -17,6 +17,7 @@ public class SCORINGFSM extends Mechanism {
         readyH,
         readyM,
         readyL,
+        readyS,
         score
     }
     public states scoreStates;
@@ -41,6 +42,10 @@ public class SCORINGFSM extends Mechanism {
                         arm.down();
                     }
                 }
+                break;
+            case readyS:
+                lift.share();
+                arm.ready();
                 break;
             case readyH:
                 lift.goHigh();
@@ -75,6 +80,7 @@ public class SCORINGFSM extends Mechanism {
     public void score() {
         scoreStates = states.score;
     }
+    public void shareGoal() {scoreStates = states.readyS;}
     public void down() {scoreStates = states.down;}
     public void toggleHigh(){
         if(scoreStates != states.readyH) {
@@ -106,6 +112,9 @@ public class SCORINGFSM extends Mechanism {
         }
         if(goal == 1) {
             lowGoal();
+        }
+        if(goal == 4) {
+            shareGoal();
         }
     }
 }

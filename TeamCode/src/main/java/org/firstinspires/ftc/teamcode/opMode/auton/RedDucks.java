@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.hardware.CapVision;
+import org.firstinspires.ftc.teamcode.hardware.Capper;
 import org.firstinspires.ftc.teamcode.hardware.Carousel;
 import org.firstinspires.ftc.teamcode.hardware.RetractableOdoSys;
 import org.firstinspires.ftc.teamcode.hardware.TURRETFSM;
@@ -27,6 +28,8 @@ public class RedDucks extends LinearOpMode {
     private FreightSensor sensor = new FreightSensor();
     private TURRETFSM scoringMech= new TURRETFSM();
     private RetractableOdoSys odoSys = new RetractableOdoSys();
+    private Capper cap = new Capper();
+
     public int theGoal;
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -42,7 +45,7 @@ public class RedDucks extends LinearOpMode {
     public static double scoreHubPosAngB = -25;
     public static double scoreHubPosAngR = 45;
 
-    public static double carouselPosx = -62;
+    public static double carouselPosx = -60.5;
     public static double carouselPosy = 63.5;
     public static double carouselPosAng = Math.toRadians(270);
 
@@ -64,6 +67,7 @@ public class RedDucks extends LinearOpMode {
         //initialize mechanisms
         carousel.init(hardwareMap);
         sensor.init(hardwareMap);
+        cap.init(hardwareMap);
 
         scoringMech.init(hardwareMap);
         cv.init(hardwareMap);
