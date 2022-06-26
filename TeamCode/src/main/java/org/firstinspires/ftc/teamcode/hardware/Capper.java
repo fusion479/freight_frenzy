@@ -9,6 +9,7 @@ public class Capper extends ServoMechanism{
     public static double GRAB = .075;
     public static double CAPPING_UP = 0.55;
     public static double CAPPING_DOWN = 0.4;
+
     public static double IDLE = 1;
 
 
